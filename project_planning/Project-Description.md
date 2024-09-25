@@ -1,9 +1,10 @@
-## Team Name 
-STIMS 
+# Team Name
 
-## Members 
+STIMS
 
-### Jack Margeson 
+## Members
+
+### Jack Margeson
 
 5th year Computer Science
 
@@ -17,6 +18,7 @@ w: [marg.es/on](https://marg.es/on)
 
 ## Project Topic Area
 
-The main area of focus for this project is creating and manipulating inventory databases to enable easy storage and retrieval of physical items through the implementation of a custom tagging system. 
+The main area of focus for this project is creating and manipulating inventory databases to enable easy storage and retrieval of physical items through the implementation of a custom tagging system.
 
-The project will consist of a backend built in an object oriented langauge to utilize the power of inheritance to create different item structures. A GUI will also be built to facilitate ease of use by end-users when performing database actions. 
+The project will consist of a backend built in an object oriented language to utilize the power of inheritance to create different item structures. A GUI will also be built to facilitate ease of use by end-users when performing database actions.
+
