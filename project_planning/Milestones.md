@@ -25,7 +25,7 @@ This timeline has been created under the assumption that the final date for seni
 
 ## Effort Matrix
 
-Task list pulled from previous assignment, [which can be found here](project_planning/Tasklist.md). As a solo project, all tasks will have the same effort level per member.
+Task list pulled from previous assignment, [which can be found here](Tasklist.md). As a solo project, all tasks will have the same effort level per member.
 
 | Task                                                                                                     | Effort Level (%) | Assigned To   |
 |----------------------------------------------------------------------------------------------------------|------------------|---------------|
