@@ -19,7 +19,7 @@ Jack Margeson, 09/30/2024
 
 ## Timeline 
 
-![Timeline Gantt chart](project_planning/project_gantt.png)
+![Timeline Gantt chart](project_gantt.png)
 
 This timeline has been created under the assumption that the final date for senior design project submissions is 05/01/2023. The time to complete milestones may scale up or down depending on the validity of this estimated end date.
 
