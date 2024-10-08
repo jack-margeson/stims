@@ -1,0 +1,18 @@
+<div class="database-view-container">
+  <div
+    class="database-view-category-container"
+    *ngFor="let category of categories; let i = index"
+    [ngStyle]="{
+      'background-color':
+        'rgb(' +
+        (240 - i * 10) +
+        ', ' +
+        (240 - i * 10) +
+        ', ' +
+        (240 - i * 10) +
+        ')'
+    }"
+  >
+    {{ i + 1 }}. {{ category.displayName }}
+  </div>
+</div>

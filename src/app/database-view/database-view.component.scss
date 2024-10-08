@@ -1,0 +1,38 @@
+@import '../app.component.variables.scss';
+
+.database-view-container {
+    display: flex;
+    flex-direction: row;
+
+    height: 100%;
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    @media (max-width: $medium-viewport) {
+        flex-direction: column; 
+
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+}
+
+.database-view-category-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 100%; 
+    min-width: 28vw;
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+    @media (max-width: $medium-viewport) {
+        flex-direction: column;
+
+        width: 100%;
+        min-height: 45vh;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+}
