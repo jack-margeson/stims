@@ -20,6 +20,7 @@
     "@angular/platform-browser": "^18.2.0",
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
+    "express-generator": "^4.16.1",
     "mariadb": "^3.3.2",
     "rxjs": "~7.8.0",
     "sqlite3": "^5.1.7",
