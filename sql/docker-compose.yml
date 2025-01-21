@@ -3,17 +3,24 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: stims-db:latest
     container_name: stims-db
-    volumes:
-      - stims-db:/var/lib/mysql
+    image: stims-db:latest
+    restart: always
     environment:
-      MARIADB_DATABASE:
-      MARIADB_ROOT_PASSWORD:
-      MARIADB_USER:
-      MARIADB_PASSWORD:
+      POSTGRES_USER: stims_admin
+      POSTGRES_PASSWORD:
+    volumes:
+      - stims-db:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - "3306:3306"
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
 volumes:
   stims-db:
     name: stims-db
