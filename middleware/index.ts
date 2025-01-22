@@ -10,6 +10,18 @@ const app = express();
 // Set the network port
 const port = process.env.PORT || 3000;
 
+// Middleware to parse JSON request bodies
+app.use(express.json());
+
+// Enable CORS
+const cors = require('cors');
+app.use(
+  cors({
+    origin: 'http://localhost:4200',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  })
+);
+
 // Import the swagger JSON and display it on the /docs route
 const swaggerDocument = require('./swagger.json');
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
@@ -28,12 +40,12 @@ client
   .then(() => console.log('Connected to the PostgreSQL database'))
   .catch((err) => console.error('Connection error', err.stack));
 
-// #####
-// Roots
-// #####
+// #########
+// Endpoints
+// #########
 
 app.get('/', (req: Request, res: Response) => {
-  res.json({ message: 'STIMS middleware online.' });
+  res.json({ message: 'STIMS API middleware online.' });
 });
 
 // Get user by ID or username
@@ -69,9 +81,8 @@ app.get('/user', async (req: Request, res: Response): Promise<any> => {
   }
 });
 
-// Set a new user
-app.post('/user', async (req: Request, res: Response): Promise<any> => {
-  console.log(req.body);
+// Register a new user
+app.post('/register', async (req: Request, res: Response): Promise<any> => {
   if (req.body === undefined) {
     return res.status(400).json({ error: 'Please provide a request body.' });
   }
@@ -88,6 +99,7 @@ app.post('/user', async (req: Request, res: Response): Promise<any> => {
   const password_hash = bcrypt.hashSync(password, 10);
 
   try {
+    await client.query('BEGIN');
     const query = `
       INSERT INTO users (username, first_name, last_name, email, password_hash)
       VALUES ($1, $2, $3, $4, $5)
@@ -97,9 +109,56 @@ app.post('/user', async (req: Request, res: Response): Promise<any> => {
 
     const result = await client.query(query, values);
 
-    res.status(201).json(result.rows[0]);
-  } catch (err) {
+    res.status(201).json({
+      message: `User ${result.rows[0].username} registered successfully.`,
+    });
+  } catch (err: any) {
+    await client.query('ROLLBACK');
     console.error('Error creating user', err);
+    if (err.code === '23505') {
+      res.status(409).json({ error: 'Username or email already exists.' });
+    } else {
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  } finally {
+    client.query('COMMIT');
+  }
+});
+
+// Login user
+app.post('/login', async (req: Request, res: Response): Promise<any> => {
+  if (req.body === undefined) {
+    return res.status(400).json({ error: 'Please provide a request body.' });
+  }
+
+  const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res
+      .status(400)
+      .json({ error: 'Please provide username and password for login.' });
+  }
+
+  try {
+    const query = 'SELECT * FROM users WHERE username = $1';
+    const result = await client.query(query, [username]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found.' });
+    }
+
+    const user = result.rows[0];
+
+    if (!bcrypt.compareSync(password, user.password_hash)) {
+      return res.status(401).json({ error: 'Invalid password.' });
+    }
+
+    // Remove the password hash from the user object
+    delete user.password_hash;
+
+    res.json(user);
+  } catch (err) {
+    console.error('Error logging in user', err);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
