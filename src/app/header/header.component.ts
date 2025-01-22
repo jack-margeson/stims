@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -12,12 +12,12 @@ import { Router } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements AfterViewInit {
   @Output() toggleSidenav = new EventEmitter<void>();
 
   constructor(private router: Router, private authService: AuthService) {}
 
-  ngOnInit() {
+  ngAfterViewInit() {
     document.getElementById('username')!.innerText =
       this.authService.getUser().username;
   }
