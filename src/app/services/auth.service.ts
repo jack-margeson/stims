@@ -33,4 +33,12 @@ export class AuthService {
     // Check if token exists in local storage
     return localStorage.getItem('stims_user_token') !== null;
   }
+
+  getUser() {
+    // Get the user from the token
+    if (this.isAuthenticated()) {
+      return JSON.parse(localStorage.getItem('stims_user_token')!);
+    }
+    return null;
+  }
 }
