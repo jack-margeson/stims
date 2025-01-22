@@ -1,0 +1,47 @@
+@import '../app.component.variables.scss';
+
+* {
+    margin: 0; padding: 0;
+    overflow: hidden;
+}
+
+body {
+    background-color: $background-color;
+}
+
+.nav-button-container {
+    display: flex;
+    flex-direction: column;
+    height: 95%;
+    justify-content: space-between;
+    margin: 15px;
+
+}
+
+.nav-button-group {
+    display: flex;
+    flex-direction: column;
+    min-height: 20%;
+    justify-content: space-around;
+}
+
+.nav-button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: $text-color;
+    
+    padding: 10px;
+    cursor: pointer;
+}
+
+.nav-button.logout {
+    align-self: flex-end;
+    flex: 1;
+}
+
+.button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

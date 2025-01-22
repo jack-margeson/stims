@@ -14,12 +14,15 @@
   />
   <span class="header-spacer"></span>
 
-  <button
-    mat-icon-button
-    class="profile-icon"
-    aria-label="profile-icon"
-    (click)="profile()"
-  >
-    <mat-icon>account_circle</mat-icon>
-  </button>
+  <div class="account-info">
+    <span id="username" class="username"></span>
+    <button
+      mat-icon-button
+      class="account-icon"
+      aria-label="account-icon"
+      (click)="navigateTo('profile')"
+    >
+      <mat-icon>account_circle</mat-icon>
+    </button>
+  </div>
 </mat-toolbar>

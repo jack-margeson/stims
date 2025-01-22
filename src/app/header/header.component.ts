@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -12,16 +12,21 @@ import { Router } from '@angular/router';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   @Output() toggleSidenav = new EventEmitter<void>();
 
   constructor(private router: Router, private authService: AuthService) {}
 
-  emitToggleSidenav() {
-    this.toggleSidenav.emit();
+  ngOnInit() {
+    document.getElementById('username')!.innerText =
+      this.authService.getUser().username;
   }
 
-  profile() {
-    this.router.navigate(['profile']);
+  navigateTo(path: string) {
+    this.router.navigate([path]);
+  }
+
+  emitToggleSidenav() {
+    this.toggleSidenav.emit();
   }
 }

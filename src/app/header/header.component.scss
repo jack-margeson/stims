@@ -14,3 +14,16 @@ mat-toolbar {
   padding-top: 6px;
   padding-left: 10px;
 }
+
+.account-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 10px;
+}
+
+.username {
+  color: $text-color;
+  font-size: 14px;
+  padding-bottom: 1px;
+}

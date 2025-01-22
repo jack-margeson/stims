@@ -3,8 +3,14 @@
     <app-header (toggleSidenav)="sidenav.toggle()"></app-header>
   </div>
   <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav #sidenav mode="side" (opened)="(null)" (closed)="(null)">
-      Sidenav content
+    <mat-sidenav
+      class="sidenav"
+      #sidenav
+      mode="side"
+      (opened)="(null)"
+      (closed)="(null)"
+    >
+      <app-sidenav></app-sidenav>
     </mat-sidenav>
     <div class="database-view">
       <app-database-view></app-database-view>

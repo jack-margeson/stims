@@ -1,1 +1,22 @@
-<p>sidenav works!</p>
+<body>
+  <div class="nav-button-container">
+    <div class="nav-button-group">
+      <div matRipple class="button-container">
+        <mat-icon>home</mat-icon>
+        <button class="nav-button" (click)="navigateTo('dashboard')">
+          Dashboard
+        </button>
+      </div>
+      <div matRipple class="button-container">
+        <mat-icon>person</mat-icon>
+        <button class="nav-button" (click)="navigateTo('profile')">
+          Profile
+        </button>
+      </div>
+    </div>
+    <div matRipple class="button-container">
+      <mat-icon>logout</mat-icon>
+      <button class="nav-button" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</body>
