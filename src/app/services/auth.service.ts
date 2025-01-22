@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { User } from '../classes/user';
+import { tap, catchError } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +13,7 @@ export class AuthService {
 
   constructor(private router: Router, private httpClient: HttpClient) {}
 
-  login(username: string, password: string) {
+  login(username: string, password: string): Observable<any> {
     return this.httpClient
       .post(`${this.base_url}login`, { username, password })
       .pipe(
@@ -20,6 +22,16 @@ export class AuthService {
           localStorage.setItem('stims_user_token', JSON.stringify(response));
         })
       );
+  }
+
+  register(user: User): Observable<any> {
+    return this.httpClient.post(`${this.base_url}register`, {
+      username: user.getUsername(),
+      email: user.getEmail(),
+      first_name: user.getFirstName(),
+      last_name: user.getLastName(),
+      password: user.getPassword(),
+    });
   }
 
   logout() {

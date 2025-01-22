@@ -1,2 +1,93 @@
 @import '../app.component.variables.scss';
 
+body {
+    background-color: $background-color-light;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    margin: 0;
+}
+
+.register-container {
+    width: 400px;
+    padding: 30px;
+    border: 1px solid $border-color;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    background-color: $background-color;
+    text-align: center;
+    color: $text-color;
+}
+
+.logo-container {
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.name-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+.name-field {
+    width: 48%;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: $text-color;
+}
+
+input {
+    width: calc(100% - 20px);
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    border: 1px solid $border-color;
+    border-radius: 5px;
+    background-color: $background-color;
+    color: $text-color;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: $button-bg-color;
+    color: $text-color;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: $button-hover-bg-color;
+}
+
+button:disabled {
+    background-color: $button-bg-disabled;
+    cursor: not-allowed;
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 10px;
+    color: $text-color;button:hover {
+    background-color: $button-hover-bg-color;
+}
+}
+
+.login-link a {
+    color: $link-color;
+    text-decoration: none;
+}
+
+.login-link a:hover {
+    text-decoration: underline;
+}
