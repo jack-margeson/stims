@@ -1,0 +1,22 @@
+meta {
+  name: POST login
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:3000/login
+  body: json
+  auth: none
+}
+
+params:query {
+  : 
+}
+
+body:json {
+  {
+    "username": "margeson",
+    "password": "example"
+  }
+}
