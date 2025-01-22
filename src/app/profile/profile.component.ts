@@ -1,24 +1,32 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { User } from '../classes/user';
+import { MatSidenavContainer } from '@angular/material/sidenav';
+import { MatSidenav } from '@angular/material/sidenav';
+import { HeaderComponent } from '../header/header.component';
+import { SidenavComponent } from '../sidenav/sidenav.component';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [],
+  imports: [MatSidenavContainer, MatSidenav, HeaderComponent, SidenavComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements AfterViewInit {
   user: User;
 
   constructor(private authService: AuthService, private router: Router) {
     this.user = this.authService.getUser();
   }
 
-  ngOnInit() {
-    document.getElementById('display_name')!.innerText =
+  navigateTo(path: string) {
+    this.router.navigate([path]);
+  }
+
+  ngAfterViewInit() {
+    document.getElementById('display-name')!.innerHTML =
       this.user.first_name + ' ' + this.user.last_name;
   }
 

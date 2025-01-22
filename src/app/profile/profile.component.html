@@ -1,4 +1,20 @@
-<body>
-  <p>Welcome, <span id="display_name"></span>!</p>
-  <button mat-button (click)="logout()">Logout</button>
-</body>
+<div class="login-container">
+  <div>
+    <app-header (toggleSidenav)="sidenav.toggle()"></app-header>
+  </div>
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav
+      class="sidenav"
+      #sidenav
+      mode="side"
+      (opened)="(null)"
+      (closed)="(null)"
+    >
+      <app-sidenav></app-sidenav>
+    </mat-sidenav>
+    <div class="profile-container">
+      <p>Welcome, <span id="display-name"></span>!</p>
+      <button mat-button (click)="logout()">Logout</button>
+    </div>
+  </mat-sidenav-container>
+</div>
