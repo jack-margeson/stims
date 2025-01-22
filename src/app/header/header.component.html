@@ -1,5 +1,10 @@
 <mat-toolbar>
-  <button mat-icon-button class="menu-icon" aria-label="menu-icon">
+  <button
+    mat-icon-button
+    class="menu-icon"
+    aria-label="menu-icon"
+    (click)="emitToggleSidenav()"
+  >
     <mat-icon>menu</mat-icon>
   </button>
   <img

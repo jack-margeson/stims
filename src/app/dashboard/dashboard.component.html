@@ -1,11 +1,16 @@
 <div class="app-container">
   <div>
-    <app-header></app-header>
+    <app-header (toggleSidenav)="sidenav.toggle()"></app-header>
   </div>
-  <div class="database-view">
-    <app-database-view></app-database-view>
-  </div>
-  <div class="toolbar">
-    <app-toolbar></app-toolbar>
-  </div>
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav mode="side" (opened)="(null)" (closed)="(null)">
+      Sidenav content
+    </mat-sidenav>
+    <div class="database-view">
+      <app-database-view></app-database-view>
+    </div>
+    <div class="toolbar">
+      <app-toolbar></app-toolbar>
+    </div>
+  </mat-sidenav-container>
 </div>

@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AuthService } from '../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -12,13 +13,15 @@ import { AuthService } from '../services/auth.service';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  constructor(private authService: AuthService) {}
+  @Output() toggleSidenav = new EventEmitter<void>();
 
-  profile() {
-    this.logout();
+  constructor(private router: Router, private authService: AuthService) {}
+
+  emitToggleSidenav() {
+    this.toggleSidenav.emit();
   }
 
-  logout() {
-    this.authService.logout();
+  profile() {
+    this.router.navigate(['profile']);
   }
 }
