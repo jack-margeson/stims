@@ -1,0 +1,35 @@
+@import '../app.component.variables.scss';
+
+body {
+    background-color: $background-color;
+}
+
+.not-found {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    color: $text-color;
+
+    h1 {
+        font-size: 6rem;
+        margin: -0.5rem;
+    }
+
+    p {
+        font-size: 2rem;
+        margin: 1rem 0;
+    }
+
+    a {
+        font-size: 1.1rem;
+        color: $link-color;
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
