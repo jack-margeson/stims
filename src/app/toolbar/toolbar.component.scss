@@ -1,3 +1,10 @@
+@import '../app.component.variables.scss';
+
+mat-toolbar {
+    background-color: $background-color;
+    color: $text-color;
+}
+
 .toolbar {
     display: flex;
     flex-direction: row;

@@ -1,3 +1,16 @@
+@import '../app.component.variables.scss';
+
 .header-spacer {
   flex: 1 1 auto;
+}
+
+mat-toolbar {
+  background-color: $background-color;
+  color: $text-color;
+}
+
+.site-logo {
+  height: 100%;
+  padding-top: 6px;
+  padding-left: 10px;
 }

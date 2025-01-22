@@ -2,10 +2,19 @@
   <button mat-icon-button class="menu-icon" aria-label="menu-icon">
     <mat-icon>menu</mat-icon>
   </button>
-  <span>STIMS</span>
+  <img
+    src="assets/svg/stims-large-light.svg"
+    class="site-logo"
+    alt="Site Logo"
+  />
   <span class="header-spacer"></span>
 
-  <button mat-icon-button class="profile-icon" aria-label="profile-icon">
+  <button
+    mat-icon-button
+    class="profile-icon"
+    aria-label="profile-icon"
+    (click)="profile()"
+  >
     <mat-icon>account_circle</mat-icon>
   </button>
 </mat-toolbar>
