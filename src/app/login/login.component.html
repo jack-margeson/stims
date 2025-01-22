@@ -1,0 +1,21 @@
+<body>
+  <div class="login-container">
+    <div class="logo-container">
+      <img src="assets/svg/stims-large-light.svg" alt="Site Logo" />
+    </div>
+    <form (submit)="onSubmit($event)">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required />
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required />
+      </div>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+  <div class="register-link">
+    <p>New? <a href="/register">Register here</a></p>
+  </div>
+</body>
