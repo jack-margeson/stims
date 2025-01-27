@@ -1,0 +1,19 @@
+<div class="app-container">
+  <div>
+    <app-header (toggleSidenav)="sidenav.toggle()"></app-header>
+  </div>
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav
+      class="sidenav"
+      #sidenav
+      mode="side"
+      (opened)="(null)"
+      (closed)="(null)"
+    >
+      <app-sidenav></app-sidenav>
+    </mat-sidenav>
+    <div class="intake-container">
+      <p>Intake placeholder!</p>
+    </div>
+  </mat-sidenav-container>
+</div>

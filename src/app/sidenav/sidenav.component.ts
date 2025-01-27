@@ -15,10 +15,14 @@ import { CommonModule } from '@angular/common';
 })
 export class SidenavComponent {
   isAdmin = false;
+  isCataloger = false;
 
   constructor(private router: Router, private authService: AuthService) {
     this.authService.isRole('admin').subscribe((response) => {
       this.isAdmin = response;
+    });
+    this.authService.isRole('cataloger').subscribe((response) => {
+      this.isCataloger = response;
     });
   }
 

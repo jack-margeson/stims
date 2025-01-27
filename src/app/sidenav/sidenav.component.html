@@ -13,9 +13,15 @@
           Profile
         </button>
       </div>
+      <div *ngIf="isCataloger" matRipple class="button-container">
+        <mat-icon>library_add</mat-icon>
+        <button class="nav-button" (click)="navigateTo('intake')">
+          Intake
+        </button>
+      </div>
       <div *ngIf="isAdmin" matRipple class="button-container">
         <mat-icon>admin_panel_settings</mat-icon>
-        <button class="nav-button" (click)="navigateTo('profile')">
+        <button class="nav-button" (click)="navigateTo('admin')">
           Administration
         </button>
       </div>

@@ -21,8 +21,7 @@ body {
 .nav-button-group {
     display: flex;
     flex-direction: column;
-    min-height: 20%;
-    justify-content: space-around;
+    min-height: 50%;
 }
 
 .nav-button {
@@ -44,4 +43,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-bottom: 20px;
+}
+
+// logout button
+.button-container:last-child {
+    padding-bottom: 0;
 }
