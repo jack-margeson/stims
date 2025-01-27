@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { User } from '../classes/user';
-import { tap, catchError } from 'rxjs';
+import { tap, catchError, map, of } from 'rxjs';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -52,5 +52,36 @@ export class AuthService {
       return JSON.parse(localStorage.getItem('stims_user_token')!);
     }
     return null;
+  }
+
+  getRoles(): Observable<any> {
+    // Check if the user has the specified role (by name)
+    if (this.isAuthenticated()) {
+      const user_id = this.getUser().user_id;
+      return this.httpClient.get(`${this.base_url}roles?id=${user_id}`).pipe(
+        tap((roles: any) => {
+          return roles;
+        })
+      );
+    }
+    return new Observable<any>();
+  }
+
+  isRole(role: string): Observable<boolean> {
+    // Check if the user has the specified role (by name)
+    if (this.isAuthenticated()) {
+      const user_id = this.getUser().user_id;
+      return this.httpClient.get(`${this.base_url}roles?id=${user_id}`).pipe(
+        map((roles: any) => {
+          for (const r of roles) {
+            if (r.role_name === role) {
+              return true;
+            }
+          }
+          return false;
+        })
+      );
+    }
+    return of(false);
   }
 }

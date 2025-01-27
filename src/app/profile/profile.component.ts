@@ -28,6 +28,17 @@ export class ProfileComponent implements AfterViewInit {
   ngAfterViewInit() {
     document.getElementById('display-name')!.innerHTML =
       this.user.first_name + ' ' + this.user.last_name;
+
+    this.authService.getRoles().subscribe({
+      next: (roles: any) => {
+        const roleList = document.getElementById('role-list')!;
+        roles.forEach((role: any) => {
+          const li = document.createElement('li');
+          li.innerHTML = role.role_display_name;
+          roleList.appendChild(li);
+        });
+      },
+    });
   }
 
   logout() {

@@ -99,7 +99,6 @@ app.post('/register', async (req: Request, res: Response): Promise<any> => {
   const password_hash = bcrypt.hashSync(password, 10);
 
   try {
-    await client.query('BEGIN');
     const query = `
       INSERT INTO users (username, first_name, last_name, email, password_hash)
       VALUES ($1, $2, $3, $4, $5)
@@ -112,16 +111,23 @@ app.post('/register', async (req: Request, res: Response): Promise<any> => {
     res.status(201).json({
       message: `User ${result.rows[0].username} registered successfully.`,
     });
+    // Assign the new user the default role (3: 'user')
+    const roleQuery = `
+      INSERT INTO user_roles (user_id, role_id)
+      VALUES ($1, 3);
+    `;
+    try {
+      await client.query(roleQuery, [result.rows[0].user_id]);
+    } catch (err) {
+      console.error('Error assigning default role to user', err);
+    }
   } catch (err: any) {
-    await client.query('ROLLBACK');
     console.error('Error creating user', err);
     if (err.code === '23505') {
       res.status(409).json({ error: 'Username or email already exists.' });
     } else {
       res.status(500).json({ error: 'Internal server error' });
     }
-  } finally {
-    client.query('COMMIT');
   }
 });
 
@@ -160,6 +166,30 @@ app.post('/login', async (req: Request, res: Response): Promise<any> => {
   } catch (err) {
     console.error('Error logging in user', err);
     res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Check role
+app.get('/roles', async (req: Request, res: Response): Promise<any> => {
+  const { id } = req.query;
+
+  try {
+    const query = `
+    SELECT r.role_name, r.role_display_name
+    FROM roles r
+    JOIN user_roles ur ON r.role_id = ur.role_id
+    WHERE ur.user_id = $1
+    `;
+    const result = await client.query(query, [id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User or role(s) not found.' });
+    }
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching role.', err);
+    res.status(500).json({ error: 'Internal server error.' });
   }
 });
 

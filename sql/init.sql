@@ -27,6 +27,7 @@ CREATE TABLE user_roles (
 
 INSERT INTO roles (role_name, role_display_name) VALUES 
     ('admin', 'Administrator'), 
+    ('cataloger', 'Cataloger'),
     ('user', 'User'),
     ('guest', 'Guest');
 
