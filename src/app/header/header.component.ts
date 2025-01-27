@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { User } from '../classes/user';
 
 @Component({
   selector: 'app-header',
@@ -15,11 +16,14 @@ import { Router } from '@angular/router';
 export class HeaderComponent implements AfterViewInit {
   @Output() toggleSidenav = new EventEmitter<void>();
 
-  constructor(private router: Router, private authService: AuthService) {}
+  user: User;
+
+  constructor(private router: Router, private authService: AuthService) {
+    this.user = this.authService.getUser();
+  }
 
   ngAfterViewInit() {
-    document.getElementById('username')!.innerText =
-      this.authService.getUser().username;
+    document.getElementById('username')!.innerHTML = this.user.username;
   }
 
   navigateTo(path: string) {
