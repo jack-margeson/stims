@@ -193,6 +193,28 @@ app.get('/roles', async (req: Request, res: Response): Promise<any> => {
   }
 });
 
+app.get(
+  '/getDatabaseViewColumns',
+  async (req: Request, res: Response): Promise<any> => {
+    try {
+      const query = `
+    SELECT * 
+    FROM database_view_columns
+    `;
+      const result = await client.query(query);
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: 'Database views not found.' });
+      }
+
+      res.json(result.rows);
+    } catch (err) {
+      console.error('Error fetching database views.', err);
+      res.status(500).json({ error: 'Internal server error.' });
+    }
+  }
+);
+
 // Start the Express server
 app.listen(port, () => {
   console.log(`The server is running at http://localhost:${port}`);

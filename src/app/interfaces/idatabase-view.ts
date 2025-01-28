@@ -1,8 +1,10 @@
 import { Type } from '@angular/core';
 
 export interface IDatabaseView {
-  type: Type<any>;
-  displayName: string;
+  id: number;
+  type_name: string;
+  display_name: string;
+  display_name_plural: string;
   description: string;
   icon: string;
 }

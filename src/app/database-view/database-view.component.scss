@@ -36,3 +36,14 @@
         overflow-y: scroll;
     }
 }
+
+.database-view-title-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.database-view-title-container > mat-icon {
+    padding-right: 10px;
+}

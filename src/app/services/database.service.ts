@@ -1,48 +1,21 @@
-import { Injectable, Type } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { IDatabaseView } from '../interfaces/idatabase-view';
-
-// Import item classes
-import { Item } from '../classes/item';
-import { Book } from '../classes/book';
+import { map, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DatabaseService {
-  constructor() {}
+  private base_url = 'http://localhost:3000/';
 
-  getDatabaseViewColumns(): IDatabaseView[] {
-    return [
-      {
-        type: Item,
-        displayName: 'Items',
-        description: 'A list of items',
-        icon: 'item',
-      },
-      {
-        type: Book,
-        displayName: 'Books',
-        description: 'A list of books',
-        icon: 'book',
-      },
-      {
-        type: Book,
-        displayName: 'Books',
-        description: 'A list of books',
-        icon: 'book',
-      },
-      {
-        type: Book,
-        displayName: 'Books',
-        description: 'A list of books',
-        icon: 'book',
-      },
-      {
-        type: Book,
-        displayName: 'Books',
-        description: 'A list of books',
-        icon: 'book',
-      },
-    ];
+  constructor(private httpClient: HttpClient) {}
+
+  getDatabaseViewColumns(): Observable<IDatabaseView[]> {
+    return this.httpClient.get(`${this.base_url}getDatabaseViewColumns`).pipe(
+      map((views: any) => {
+        return views.map((view: any) => view as IDatabaseView);
+      })
+    );
   }
 }
