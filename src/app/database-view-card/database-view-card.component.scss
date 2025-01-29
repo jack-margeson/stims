@@ -1,0 +1,19 @@
+@import '../app.component.variables.scss';
+
+.database-view-card {
+    background-color: $background-color;
+    color: $text-color;
+    width: 100%;
+}
+
+mat-card-title {
+    font-size: 16px;
+}
+
+mat-card-subtitle {
+    font-size: 14px;
+}
+
+mat-card-title-group > img {
+    object-fit: contain;
+}

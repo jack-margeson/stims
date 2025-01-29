@@ -19,7 +19,7 @@
 
 .database-view-category-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;;
     align-items: center;
 
     height: 100%; 
@@ -28,8 +28,6 @@
     overflow-y: scroll;
 
     @media (max-width: $medium-viewport) {
-        flex-direction: column;
-
         width: 100%;
         min-height: 45vh;
         overflow-x: hidden;
@@ -46,4 +44,9 @@
 
 .database-view-title-container > mat-icon {
     padding-right: 10px;
+}
+
+.database-view-card {
+    width: 90%;
+    padding-bottom: 10px;
 }

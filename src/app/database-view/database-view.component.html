@@ -17,5 +17,11 @@
       <mat-icon>{{ category.icon }}</mat-icon>
       <p>{{ category.display_name_plural }}</p>
     </div>
+    <app-database-view-card
+      class="database-view-card"
+      *ngFor="let item of category.items"
+      [item]="item"
+    >
+    </app-database-view-card>
   </div>
 </div>

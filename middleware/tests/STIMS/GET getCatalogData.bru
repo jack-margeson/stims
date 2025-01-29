@@ -1,0 +1,16 @@
+meta {
+  name: GET getCatalogData
+  type: http
+  seq: 6
+}
+
+get {
+  url: http://localhost:3000/user?id=1
+  body: none
+  auth: none
+}
+
+params:query {
+  id: 1
+  ~username: 
+}
