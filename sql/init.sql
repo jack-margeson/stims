@@ -58,14 +58,15 @@ INSERT INTO database_types (type_name, tag_type_id, args) VALUES
     -- Item type
     ('item', 
     (SELECT id FROM tag_types WHERE tag_type_name = 'generic'),
-    '["name", "description"]'::json),
+    '["name", "description", "image"]'::json),
     -- Book type
     ('book', 
     (SELECT id FROM tag_types WHERE tag_type_name = 'isbn'),
-    '["author", "publisher", "publication_date", "genre", "language"]'::json);
+    '["title", "author", "publisher", "publication_date", "genre", "language", "image"]'::json);
 
 CREATE TABLE database_view_columns (
-    id SERIAL PRIMARY KEY REFERENCES database_types(id),
+    id SERIAL PRIMARY KEY,
+    type_id INT NOT NULL REFERENCES database_types(id),
     type_name VARCHAR(50) NOT NULL UNIQUE REFERENCES database_types(type_name),
     display_name VARCHAR(100) NOT NULL,
     display_name_plural VARCHAR(100) NOT NULL,
@@ -73,15 +74,72 @@ CREATE TABLE database_view_columns (
     icon VARCHAR(50)
 );
 
-INSERT INTO database_view_columns(type_name, display_name, display_name_plural, description, icon) VALUES 
-    ('item', 'Item', 'Items', 'Default item type', 'shelves'),
-    ('book', 'Book', 'Books', 'Default book type', 'auto_stories' );
+INSERT INTO database_view_columns(type_id, type_name, display_name, display_name_plural, description, icon) VALUES 
+    (
+        (SELECT id FROM database_types WHERE type_name='item'), 
+        'item', 'Item', 'Items', 'Default item type', 'shelves'
+    ),
+    (
+        (SELECT id FROM database_types WHERE type_name='book'), 
+        'book', 'Book', 'Books', 'Default book type', 'auto_stories' 
+    );
+
+CREATE TABLE item_statuses (
+    id SERIAL PRIMARY KEY,
+    status_name VARCHAR(50) NOT NULL UNIQUE
+);
+
+INSERT INTO item_statuses (status_name) VALUES 
+    ('available'),
+    ('checked_out'),
+    ('lost'),
+    ('damaged'),
+    ('in_repair');
 
 CREATE TABLE catalog (
-    id SERIAL PRIMARY KEY, 
+    id SERIAL PRIMARY KEY,
     type_id INT NOT NULL REFERENCES database_types(id),
-    tag_data JSON NOT NULL,
+    tag_data VARCHAR(255) NOT NULL,
     args JSON NOT NULL,
-    status JSON NOT NULL, 
+    status INT NOT NULL REFERENCES item_statuses(id), 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- TEST DATA
+INSERT INTO catalog(type_id, tag_data, args, status) VALUES 
+    (
+        (SELECT id FROM database_types WHERE type_name = 'item'), 
+        'bell_pepper_01',
+        '{"name": "Bell Pepper", "description": "Green bell pepper.", "image": ""}'::json,
+        (SELECT id FROM item_statuses WHERE status_name = 'available')
+    ),
+    (
+        (SELECT id FROM database_types WHERE type_name = 'book'), 
+        '9780060935467',
+        '{"title": "To Kill a Mockingbird", "author": "Harper Lee", "publisher": "Harper Perennial Modern Classics", "publication_date": "2006-10-11", "genre": "Fiction", "language": "English", "image":"http://ia600100.us.archive.org/view_archive.php?archive=/5/items/l_covers_0012/l_covers_0012_60.zip&file=0012606523-L.jpg"}'::json,
+        (SELECT id FROM item_statuses WHERE status_name = 'available')
+    ),
+    (
+        (SELECT id FROM database_types WHERE type_name = 'book'), 
+        '9781400079179',
+        '{"title": "The Da Vinci Code", "author": "Dan Brown", "publisher": "Anchor", "publication_date": "2009-03-31", "genre": "Mystery", "language": "English", "image":"http://ia800404.us.archive.org/view_archive.php?archive=/33/items/l_covers_0010/l_covers_0010_52.zip&file=0010520476-L.jpg"}'::json,
+        (SELECT id FROM item_statuses WHERE status_name = 'available')
+    ),
+    (
+        (SELECT id FROM database_types WHERE type_name = 'book'), 
+        '9780452262935',
+        '{"title": "1984", "author": "George Orwell", "publisher": "Plume", "publication_date": "2003-05-06", "genre": "Dystopian", "language": "English", "image":"http://ia600205.us.archive.org/view_archive.php?archive=/34/items/olcovers29/olcovers29-L.zip&file=296204-L.jpg"}'::json,
+        (SELECT id FROM item_statuses WHERE status_name = 'available')
+    ),
+    (
+        (SELECT id FROM database_types WHERE type_name = 'book'), 
+        '9780316769174',
+        '{"title": "The Catcher in the Rye", "author": "J.D. Salinger", "publisher": "Little, Brown and Company", "publication_date": "2001-01-30", "genre": "Fiction", "language": "English", "image":"https://ia802309.us.archive.org/view_archive.php?archive=/20/items/l_covers_0008/l_covers_0008_42.zip&file=0008427413-L.jpg"}'::json,
+        (SELECT id FROM item_statuses WHERE status_name = 'available')
+    ),
+    (
+        (SELECT id FROM database_types WHERE type_name = 'book'), 
+        '9780743273565',
+        '{"title": "The Great Gatsby", "author": "F. Scott Fitzgerald", "publisher": "Scribner", "publication_date": "2004-09-30", "genre": "Fiction", "language": "English", "image":"https://ia801909.us.archive.org/view_archive.php?archive=/31/items/l_covers_0013/l_covers_0013_02.zip&file=0013028546-L.jpg"}'::json,
+        (SELECT id FROM item_statuses WHERE status_name = 'available')
+    );
