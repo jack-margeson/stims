@@ -1,18 +1,18 @@
 import {
-  AfterViewInit,
-  ChangeDetectorRef,
   Component,
+  inject,
   Input,
   OnChanges,
-  OnInit,
   SimpleChanges,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ItemDetailDialogComponent } from '../item-detail-dialog/item-detail-dialog.component';
 
 @Component({
   selector: 'app-database-view-card',
   standalone: true,
-  imports: [MatCardModule],
+  imports: [MatCardModule, ItemDetailDialogComponent],
   templateUrl: './database-view-card.component.html',
   styleUrl: './database-view-card.component.scss',
 })
@@ -20,6 +20,7 @@ export class DatabaseViewCardComponent implements OnChanges {
   @Input() item: any;
 
   orderedItemArgs: Array<Array<any>> = [];
+  readonly dialog = inject(MatDialog);
 
   constructor() {}
 
@@ -29,6 +30,24 @@ export class DatabaseViewCardComponent implements OnChanges {
         this.orderedItemArgs.push([arg, this.item.args[arg]]);
       });
     }
-    console.log(this.orderedItemArgs);
+  }
+
+  onClick(): void {
+    this.openDialog('300ms', '500ms');
+  }
+
+  openDialog(
+    enterAnimationDuration: string,
+    exitAnimationDuration: string
+  ): void {
+    this.dialog.open(ItemDetailDialogComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '85%',
+      width: '70%',
+      data: this.item,
+      enterAnimationDuration,
+      exitAnimationDuration,
+    });
   }
 }

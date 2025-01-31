@@ -1,13 +1,15 @@
-<mat-card class="database-view-card" appearance="outlined">
-  <mat-card-header>
-    <mat-card-title-group>
-      <img
-        mat-card-sm-image
-        src="{{ this.item.args.image || 'assets/png/no_img_available.png' }}"
-      />
-      <mat-card-title>{{ orderedItemArgs[0][1] }}</mat-card-title>
-      <mat-card-subtitle>{{ orderedItemArgs[1][1] }}</mat-card-subtitle>
-    </mat-card-title-group>
-  </mat-card-header>
-  <mat-card-content></mat-card-content>
-</mat-card>
+<div class="database-view-card-container" (click)="onClick()">
+  <mat-card class="database-view-card" appearance="outlined">
+    <mat-card-header>
+      <mat-card-title-group>
+        <img
+          mat-card-sm-image
+          src="{{ this.item.args.image || 'assets/png/no_img_available.png' }}"
+        />
+        <mat-card-title>{{ orderedItemArgs[0][1] }}</mat-card-title>
+        <mat-card-subtitle>{{ orderedItemArgs[1][1] }}</mat-card-subtitle>
+      </mat-card-title-group>
+    </mat-card-header>
+    <mat-card-content></mat-card-content>
+  </mat-card>
+</div>

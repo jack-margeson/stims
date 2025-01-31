@@ -1,0 +1,116 @@
+@import '../app.component.variables.scss';
+
+
+.item-detail-dialog-container {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    background-color: $background-color;
+    color: $text-color;
+
+    @media (max-width: $medium-viewport) {
+        flex-direction: column;
+        overflow-y: scroll;
+    }
+}
+
+.inner-container-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    border-right: 1px solid $border-color;
+
+    width: 30%;
+    max-width: 30%;
+    height: 100%;
+
+    @media (max-width: $medium-viewport) {
+        border-right: none;
+    }
+}
+
+.inner-container-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 70%;
+    max-width: 70%;
+    height: 100%;
+    
+}
+
+.display-name {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
+.display-description {
+    font-size: 18px;
+    margin-top: 0px;
+}
+
+.item-detail-image {
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+}
+
+.arg-table-container {
+    width: 100%;
+    height: 80%;
+    min-height: 80%;
+    overflow-x: auto;
+}
+
+.arg-table {
+    width: 100%;
+    margin-top: 40px;
+    border-collapse: collapse;
+
+    td {
+        padding: 10px;
+        border: 1px solid $border-color;
+    }
+
+    .arg-table-key {
+        font-weight: bold;
+        background-color: $background-color;
+    }
+
+    .arg-table-value {
+        background-color: $background-color-light;
+    }
+}
+
+.checkout-container {
+    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+    .checkout-button {
+        width: 50%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: $button-bg-color;
+        color: $text-color;
+        font-size: 16px;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .checkout-button:hover {
+        background-color: $button-hover-bg-color;
+    }
+}
