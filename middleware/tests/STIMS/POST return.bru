@@ -1,0 +1,16 @@
+meta {
+  name: POST return
+  type: http
+  seq: 9
+}
+
+post {
+  url: http://localhost:3000/return?user_id=1&item_id=11
+  body: json
+  auth: none
+}
+
+params:query {
+  user_id: 1
+  item_id: 11
+}

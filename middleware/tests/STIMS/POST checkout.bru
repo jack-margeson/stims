@@ -1,0 +1,16 @@
+meta {
+  name: POST checkout
+  type: http
+  seq: 8
+}
+
+post {
+  url: http://localhost:3000/checkout?user_id=1&item_id=10
+  body: json
+  auth: none
+}
+
+params:query {
+  user_id: 1
+  item_id: 10
+}

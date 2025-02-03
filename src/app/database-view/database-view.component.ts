@@ -6,6 +6,7 @@ import { MatIcon } from '@angular/material/icon';
 import { DatabaseService } from '../services/database.service';
 import { IDatabaseView } from '../interfaces/idatabase-view';
 import { DatabaseViewCardComponent } from '../database-view-card/database-view-card.component';
+import { repeat, repeatWhen } from 'rxjs';
 
 @Component({
   selector: 'app-database-view',
@@ -32,18 +33,24 @@ export class DatabaseViewComponent implements AfterViewInit {
         } as IDatabaseView;
       });
 
-      this.databaseService.getCatalogData().subscribe((results) => {
-        results.forEach((item) => {
-          const category = this.categories.find(
-            (category) => category.id === item.type_id
-          );
-          if (category) {
-            category.items.push(item);
-          }
-        });
+      this.databaseService
+        .getCatalogData()
+        .pipe(repeat({ delay: () => this.databaseService.reloadCatalog }))
+        .subscribe((results) => {
+          // clear all items (for retry)
+          this.categories.forEach((category) => {
+            category.items = [];
+          });
 
-        console.log(this.categories);
-      });
+          results.forEach((item) => {
+            const category = this.categories.find(
+              (category) => category.id === item.type_id
+            );
+            if (category) {
+              category.items.push(item);
+            }
+          });
+        });
     });
   }
 

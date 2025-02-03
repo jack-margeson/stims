@@ -109,7 +109,7 @@ CREATE TABLE checked_out (
     id SERIAL PRIMARY KEY,
     item_id INT NOT NULL REFERENCES catalog(id),
     user_id INT NOT NULL REFERENCES users(user_id),
-    checked_out_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    checked_out_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- TEST DATA

@@ -222,6 +222,7 @@ app.get(
       const query = `
     SELECT * 
     FROM catalog
+    ORDER BY status ASC, created_at DESC;
     `;
       const result = await client.query(query);
 
@@ -253,6 +254,117 @@ app.get('/getStatuses', async (req: Request, res: Response): Promise<any> => {
   } catch (err) {
     console.error('Error fetching item statuses.', err);
     res.status(500).json({ error: 'Internal server error.' });
+  }
+});
+
+// Checkout an item
+app.post('/checkout', async (req: Request, res: Response): Promise<any> => {
+  const { user_id, item_id } = req.query;
+
+  if (!user_id || !item_id) {
+    return res
+      .status(400)
+      .json({ error: 'Please provide user ID and item ID.' });
+  }
+
+  try {
+    // Check if the item is available
+    const itemQuery = 'SELECT status FROM catalog WHERE id = $1';
+    const itemResult = await client.query(itemQuery, [item_id]);
+
+    if (itemResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Item not found.' });
+    }
+
+    const itemStatus = itemResult.rows[0].status;
+    const availableStatusId = (
+      await client.query(
+        "SELECT id FROM item_statuses WHERE status_name = 'available'"
+      )
+    ).rows[0].id;
+
+    if (itemStatus !== availableStatusId) {
+      return res
+        .status(400)
+        .json({ error: 'Item is not available for checkout.' });
+    }
+
+    // Insert into checked_out table
+    const checkoutQuery = `
+      INSERT INTO checked_out (item_id, user_id)
+      VALUES ($1, $2)
+      RETURNING *;
+    `;
+    const checkoutResult = await client.query(checkoutQuery, [
+      item_id,
+      user_id,
+    ]);
+
+    // Update the item status to 'checked_out'
+    const checkedOutStatusId = (
+      await client.query(
+        "SELECT id FROM item_statuses WHERE status_name = 'checked_out'"
+      )
+    ).rows[0].id;
+    const updateStatusQuery = 'UPDATE catalog SET status = $1 WHERE id = $2';
+    await client.query(updateStatusQuery, [checkedOutStatusId, item_id]);
+
+    res.status(201).json({
+      message: 'Item checked out successfully.',
+      checkout: checkoutResult.rows[0],
+    });
+  } catch (err) {
+    console.error('Error checking out item', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+// Return an item
+app.post('/return', async (req: Request, res: Response): Promise<any> => {
+  const { user_id, item_id } = req.query;
+
+  if (!user_id || !item_id) {
+    return res
+      .status(400)
+      .json({ error: 'Please provide user ID and item ID.' });
+  }
+
+  try {
+    // Check if the item is checked out by the user
+    const checkoutQuery = `
+      SELECT * 
+      FROM checked_out 
+      WHERE item_id = $1 AND user_id = $2
+    `;
+    const checkoutResult = await client.query(checkoutQuery, [
+      item_id,
+      user_id,
+    ]);
+
+    if (checkoutResult.rows.length === 0) {
+      return res.status(404).json({ error: 'Checked out item not found.' });
+    }
+
+    // Delete the entry from checked_out table
+    const deleteQuery = `
+      DELETE FROM checked_out 
+      WHERE item_id = $1 AND user_id = $2
+    `;
+    await client.query(deleteQuery, [item_id, user_id]);
+
+    // Update the item status to 'available'
+    const availableStatusId = (
+      await client.query(
+        "SELECT id FROM item_statuses WHERE status_name = 'available'"
+      )
+    ).rows[0].id;
+    const updateStatusQuery = 'UPDATE catalog SET status = $1 WHERE id = $2';
+    await client.query(updateStatusQuery, [availableStatusId, item_id]);
+
+    res.status(200).json({ message: 'Item returned successfully.' });
+  } catch (err) {
+    console.error('Error returning item', err);
+    res.status(500).json({ error: 'Internal server error' });
   }
 });
 

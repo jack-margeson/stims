@@ -19,6 +19,7 @@
     <div class="checkout-container">
       <button
         [disabled]="this.checkoutDisabled"
+        (click)="this.checkout()"
         mat-raised-button
         color="primary"
         class="checkout-button"
