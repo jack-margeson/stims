@@ -21,3 +21,8 @@ mat-card-subtitle {
 mat-card-title-group > img {
     object-fit: contain;
 }
+
+.unavailable {
+    filter: grayscale(100%);
+    opacity: 0.7;
+}

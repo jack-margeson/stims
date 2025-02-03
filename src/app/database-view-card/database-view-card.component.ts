@@ -19,12 +19,14 @@ import { ItemDetailDialogComponent } from '../item-detail-dialog/item-detail-dia
 export class DatabaseViewCardComponent implements OnChanges {
   @Input() item: any;
 
+  isUnavailable: boolean = false;
   orderedItemArgs: Array<Array<any>> = [];
   readonly dialog = inject(MatDialog);
 
   constructor() {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.isUnavailable = this.item.status != 1;
     if (changes['item']) {
       Object.getOwnPropertyNames(this.item.args).forEach((arg) => {
         this.orderedItemArgs.push([arg, this.item.args[arg]]);

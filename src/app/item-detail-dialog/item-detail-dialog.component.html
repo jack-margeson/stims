@@ -11,13 +11,19 @@
     <div class="arg-table-container">
       <table class="arg-table">
         <tr *ngFor="let arg of orderedItemArgs">
-          <td class="arg-table-key">{{ arg[0] }}</td>
+          <td class="arg-table-key">{{ titlefy(arg[0]) }}</td>
           <td class="arg-table-value">{{ arg[1] }}</td>
         </tr>
       </table>
     </div>
     <div class="checkout-container">
-      <button mat-raised-button color="primary" class="checkout-button">
+      <button
+        [disabled]="this.checkoutDisabled"
+        mat-raised-button
+        color="primary"
+        class="checkout-button"
+        id="checkout-button"
+      >
         Checkout
       </button>
     </div>

@@ -237,6 +237,25 @@ app.get(
   }
 );
 
+app.get('/getStatuses', async (req: Request, res: Response): Promise<any> => {
+  try {
+    const query = `
+      SELECT * 
+      FROM item_statuses
+    `;
+    const result = await client.query(query);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Item statuses not found.' });
+    }
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching item statuses.', err);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
+
 // Start the Express server
 app.listen(port, () => {
   console.log(`The server is running at http://localhost:${port}`);

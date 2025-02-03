@@ -113,4 +113,9 @@
     .checkout-button:hover {
         background-color: $button-hover-bg-color;
     }
+
+    .checkout-button:disabled {
+        background-color: $button-bg-disabled;
+        cursor: not-allowed;
+    }
 }
