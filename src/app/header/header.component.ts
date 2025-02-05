@@ -23,7 +23,7 @@ export class HeaderComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    document.getElementById('username')!.innerHTML = this.user.username;
+    document.getElementById('username')!.innerHTML = '@' + this.user.username;
   }
 
   navigateTo(path: string) {
