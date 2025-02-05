@@ -9,7 +9,7 @@ import { HeaderComponent } from '../header/header.component';
 import { SidenavComponent } from '../sidenav/sidenav.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { DatabaseService } from '../services/database.service';
-import { MatTable, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { NotificationService } from '../services/notification.service';
 
 @Component({
@@ -31,6 +31,7 @@ export class ProfileComponent {
   user: User;
   userRoles: any[] = [];
   checkedOutItems: any[] = [];
+  checkedOutItemColumns: string[] = ['type', 'name', 'checkedOutAt', 'null'];
 
   constructor(
     private authService: AuthService,
@@ -45,6 +46,11 @@ export class ProfileComponent {
         roles.forEach((role: any) => {
           this.userRoles.push(role.role_display_name);
         });
+      },
+      error: (error) => {
+        this.notificationService.showNotification(
+          'Error getting user roles: ' + error.error.error
+        );
       },
     });
 
@@ -67,8 +73,13 @@ export class ProfileComponent {
             ),
           };
         });
+      },
+      error: (error) => {
+        // this.notificationService.showNotification(
+        //   'Error getting checked out items: ' + error.error.error
+        // );
 
-        console.log(this.checkedOutItems);
+        this.checkedOutItems = [];
       },
     });
   }

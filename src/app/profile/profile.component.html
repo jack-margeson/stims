@@ -64,17 +64,16 @@
             </td>
           </ng-container>
 
-          <tr
-            mat-header-row
-            *matHeaderRowDef="['type', 'name', 'checkedOutAt', 'null']"
-          ></tr>
-          <tr
-            mat-row
-            *matRowDef="
-              let row;
-              columns: ['type', 'name', 'checkedOutAt', 'null']
-            "
-          ></tr>
+          <tr mat-header-row *matHeaderRowDef="checkedOutItemColumns"></tr>
+
+          <tr mat-row *matRowDef="let row; columns: checkedOutItemColumns"></tr>
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" [colSpan]="checkedOutItemColumns.length">
+              <div class="no-data-found-row">
+                <h5>You have no checked out items.</h5>
+              </div>
+            </td>
+          </tr>
         </table>
       </div>
 

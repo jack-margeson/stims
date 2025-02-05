@@ -100,3 +100,10 @@ table {
     padding: 0 10px;
     background-color: $background-color !important;
 }
+
+.no-data-found-row {
+    text-align: center;
+    font-size: 20px;
+    color: $text-color;
+    padding: 20px;
+}
