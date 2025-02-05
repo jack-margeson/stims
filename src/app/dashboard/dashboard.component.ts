@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from '../header/header.component';
 import { DatabaseViewComponent } from '../database-view/database-view.component';
@@ -23,4 +23,9 @@ import { SidenavComponent } from '../sidenav/sidenav.component';
 })
 export class DashboardComponent {
   title = 'STIMS';
+  searchTerm: string = '';
+
+  onSearchTermChange(searchTerm: string) {
+    this.searchTerm = searchTerm;
+  }
 }

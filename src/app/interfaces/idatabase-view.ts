@@ -9,4 +9,5 @@ export interface IDatabaseView {
   description: string;
   icon: string;
   items: any[];
+  hidden: boolean;
 }

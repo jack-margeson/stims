@@ -1,11 +1,12 @@
 <mat-toolbar class="toolbar">
-  <button mat-icon-button class="history-icon" aria-label="history-icon">
-    <mat-icon>history</mat-icon>
-  </button>
-
-  <input matInput class="toolbar-search" placeholder="Search" />
-
   <button mat-icon-button class="search-icon" aria-label="search-icon">
     <mat-icon>search</mat-icon>
   </button>
+
+  <input
+    matInput
+    class="toolbar-search"
+    placeholder="Search..."
+    (input)="onSearchChange($event)"
+  />
 </mat-toolbar>
