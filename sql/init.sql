@@ -4,6 +4,10 @@ GRANT ALL ON DATABASE stims_db TO stims_admin;
 
 \connect stims_db;
 
+-- SET TIMEZONE (America/New_York)
+
+ALTER DATABASE stims_db SET timezone TO 'UTC';
+
 -- USER SETUP
 
 CREATE TABLE users (
@@ -13,7 +17,7 @@ CREATE TABLE users (
     last_name VARCHAR(50) NOT NULL,
     email VARCHAR(100) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE roles (
@@ -102,14 +106,14 @@ CREATE TABLE catalog (
     tag_data VARCHAR(255) NOT NULL,
     args JSON NOT NULL,
     status INT NOT NULL REFERENCES item_statuses(id), 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE checked_out (
     id SERIAL PRIMARY KEY,
     item_id INT NOT NULL REFERENCES catalog(id),
     user_id INT NOT NULL REFERENCES users(user_id),
-    checked_out_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    checked_out_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 -- TEST DATA

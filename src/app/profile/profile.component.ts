@@ -54,6 +54,17 @@ export class ProfileComponent {
           return {
             ...item,
             name: item.args[Object.getOwnPropertyNames(item.args)[0]],
+            checked_out_at: new Date(item.checked_out_at).toLocaleString(
+              'en-US',
+              {
+                month: '2-digit',
+                day: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true,
+              }
+            ),
           };
         });
 

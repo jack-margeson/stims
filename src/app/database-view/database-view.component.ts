@@ -14,7 +14,6 @@ import { repeat, repeatWhen } from 'rxjs';
   imports: [
     CommonModule,
     MatGridListModule,
-    MatGridTile,
     MatIcon,
     DatabaseViewCardComponent,
   ],
