@@ -368,6 +368,40 @@ app.post('/return', async (req: Request, res: Response): Promise<any> => {
   }
 });
 
+app.get(
+  '/getCheckedOutItems',
+  async (req: Request, res: Response): Promise<any> => {
+    const { user_id } = req.query;
+
+    try {
+      let query = `
+      SELECT co.item_id, co.user_id, co.checked_out_at, dvc.display_name, c.tag_data, c.args
+      FROM checked_out co
+      JOIN catalog c ON co.item_id = c.id
+      JOIN database_types dt ON c.type_id = dt.id
+      JOIN database_view_columns dvc ON c.type_id = dvc.type_id
+    `;
+      const queryParams: (string | number)[] = [];
+
+      if (user_id) {
+        query += ' WHERE co.user_id = $1';
+        queryParams.push(Number(user_id));
+      }
+
+      const result = await client.query(query, queryParams);
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({ error: 'No checked out items found.' });
+      }
+
+      res.json(result.rows);
+    } catch (err) {
+      console.error('Error fetching checked out items', err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+);
+
 // Start the Express server
 app.listen(port, () => {
   console.log(`The server is running at http://localhost:${port}`);

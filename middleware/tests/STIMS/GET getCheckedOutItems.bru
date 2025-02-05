@@ -1,0 +1,15 @@
+meta {
+  name: GET getCheckedOutItems
+  type: http
+  seq: 10
+}
+
+get {
+  url: http://localhost:3000/checkedOutItems
+  body: none
+  auth: none
+}
+
+params:query {
+  ~userID: 1
+}

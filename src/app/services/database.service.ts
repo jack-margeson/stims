@@ -51,4 +51,30 @@ export class DatabaseService {
       },
     });
   }
+
+  returnItem(user_id: any, item_id: any): Observable<any> {
+    return this.httpClient.post(`${this.base_url}return`, null, {
+      params: {
+        user_id: user_id,
+        item_id: item_id,
+      },
+    });
+  }
+
+  getCheckedOutItems(user_id?: any): Observable<any[]> {
+    const params: any = {};
+    if (user_id) {
+      params.user_id = user_id;
+    }
+
+    return this.httpClient
+      .get(`${this.base_url}getCheckedOutItems`, {
+        params: params,
+      })
+      .pipe(
+        map((items: any) => {
+          return items.map((item: any) => item as any);
+        })
+      );
+  }
 }

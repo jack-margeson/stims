@@ -13,12 +13,74 @@
       <app-sidenav></app-sidenav>
     </mat-sidenav>
     <div class="profile-container">
-      <p>Welcome, <span id="display-name"></span>!</p>
+      <div class="profile-header">
+        <img class="profile-picture" src="assets/png/no_img_available.png" />
+        <div class="name-tags-container">
+          <h2 class="name">
+            {{
+              user.first_name +
+                " " +
+                user.last_name +
+                " (@" +
+                user.username +
+                ")"
+            }}
+          </h2>
+          <mat-chip-set aria-label="User roles">
+            <mat-chip class="chip" *ngFor="let role of this.userRoles">{{
+              role
+            }}</mat-chip>
+          </mat-chip-set>
+        </div>
+      </div>
       <br />
-      <p>My roles:</p>
-      <ul id="role-list"></ul>
-      <br />
-      <button mat-button (click)="logout()">Logout</button>
+      <div class="table-container">
+        <table mat-table [dataSource]="checkedOutItems">
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>Item Type</th>
+            <td mat-cell *matCellDef="let item">{{ item.display_name }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Name</th>
+            <td mat-cell *matCellDef="let item">{{ item.name }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="checkedOutAt">
+            <th mat-header-cell *matHeaderCellDef>Checked Out At</th>
+            <td mat-cell *matCellDef="let item">{{ item.checked_out_at }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="null">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let item">
+              <button
+                (click)="this.returnItem(item.user_id, item.item_id)"
+                class="return-button"
+                mat-button
+              >
+                Return Item
+              </button>
+            </td>
+          </ng-container>
+
+          <tr
+            mat-header-row
+            *matHeaderRowDef="['type', 'name', 'checkedOutAt', 'null']"
+          ></tr>
+          <tr
+            mat-row
+            *matRowDef="
+              let row;
+              columns: ['type', 'name', 'checkedOutAt', 'null']
+            "
+          ></tr>
+        </table>
+      </div>
+
+      <button class="logout-button" mat-button (click)="logout()">
+        Logout
+      </button>
     </div>
   </mat-sidenav-container>
 </div>

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
@@ -6,39 +7,83 @@ import { MatSidenavContainer } from '@angular/material/sidenav';
 import { MatSidenav } from '@angular/material/sidenav';
 import { HeaderComponent } from '../header/header.component';
 import { SidenavComponent } from '../sidenav/sidenav.component';
+import { MatChipsModule } from '@angular/material/chips';
+import { DatabaseService } from '../services/database.service';
+import { MatTable, MatTableModule } from '@angular/material/table';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [MatSidenavContainer, MatSidenav, HeaderComponent, SidenavComponent],
+  imports: [
+    CommonModule,
+    MatSidenavContainer,
+    MatSidenav,
+    HeaderComponent,
+    SidenavComponent,
+    MatChipsModule,
+    MatTableModule,
+  ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
-export class ProfileComponent implements AfterViewInit {
+export class ProfileComponent {
   user: User;
+  userRoles: any[] = [];
+  checkedOutItems: any[] = [];
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private databaseService: DatabaseService,
+    private router: Router,
+    private notificationService: NotificationService
+  ) {
     this.user = this.authService.getUser();
+
+    this.authService.getRoles().subscribe({
+      next: (roles: any) => {
+        roles.forEach((role: any) => {
+          this.userRoles.push(role.role_display_name);
+        });
+      },
+    });
+
+    this.databaseService.getCheckedOutItems().subscribe({
+      next: (items: any) => {
+        this.checkedOutItems = items.map((item: any) => {
+          return {
+            ...item,
+            name: item.args[Object.getOwnPropertyNames(item.args)[0]],
+          };
+        });
+
+        console.log(this.checkedOutItems);
+      },
+    });
+  }
+
+  returnItem(user_id: any, item_id: any) {
+    this.databaseService.returnItem(user_id, item_id).subscribe({
+      next: (response) => {
+        this.notificationService.showNotification(
+          'Item returned successfully!'
+        );
+
+        // Remove the item from the checked out items list locally
+        this.checkedOutItems = this.checkedOutItems.filter(
+          (item) => item.item_id !== item_id
+        );
+      },
+      error: (error) => {
+        this.notificationService.showNotification(
+          'Error returning item: ' + error.error.error
+        );
+      },
+    });
   }
 
   navigateTo(path: string) {
     this.router.navigate([path]);
-  }
-
-  ngAfterViewInit() {
-    document.getElementById('display-name')!.innerHTML =
-      this.user.first_name + ' ' + this.user.last_name;
-
-    this.authService.getRoles().subscribe({
-      next: (roles: any) => {
-        const roleList = document.getElementById('role-list')!;
-        roles.forEach((role: any) => {
-          const li = document.createElement('li');
-          li.innerHTML = role.role_display_name;
-          roleList.appendChild(li);
-        });
-      },
-    });
   }
 
   logout() {

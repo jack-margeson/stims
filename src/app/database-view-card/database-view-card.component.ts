@@ -12,7 +12,7 @@ import { ItemDetailDialogComponent } from '../item-detail-dialog/item-detail-dia
 @Component({
   selector: 'app-database-view-card',
   standalone: true,
-  imports: [MatCardModule, ItemDetailDialogComponent],
+  imports: [MatCardModule],
   templateUrl: './database-view-card.component.html',
   styleUrl: './database-view-card.component.scss',
 })
