@@ -77,4 +77,8 @@ export class DatabaseService {
         })
       );
   }
+
+  returnAllItems(): Observable<any> {
+    return this.httpClient.post(`${this.base_url}returnAllItems`, null);
+  }
 }

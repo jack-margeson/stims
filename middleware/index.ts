@@ -403,6 +403,40 @@ app.get(
   }
 );
 
+// Return all items
+app.post(
+  '/returnAllItems',
+  async (req: Request, res: Response): Promise<any> => {
+    try {
+      // Delete all entries from checked_out table
+      const deleteQuery = 'DELETE FROM checked_out RETURNING item_id';
+      const deleteResult = await client.query(deleteQuery);
+
+      if (deleteResult.rows.length === 0) {
+        return res.status(404).json({ error: 'No checked out items found.' });
+      }
+
+      // Update the status of all items to 'available'
+      const availableStatusId = (
+        await client.query(
+          "SELECT id FROM item_statuses WHERE status_name = 'available'"
+        )
+      ).rows[0].id;
+      const updateStatusQuery =
+        'UPDATE catalog SET status = $1 WHERE id = ANY($2::int[])';
+      const itemIds = deleteResult.rows.map(
+        (row: { item_id: number }) => row.item_id
+      );
+      await client.query(updateStatusQuery, [availableStatusId, itemIds]);
+
+      res.status(200).json({ message: 'All items returned successfully.' });
+    } catch (err) {
+      console.error('Error returning all items', err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+);
+
 // Start the Express server
 app.listen(port, () => {
   console.log(`The server is running at http://localhost:${port}`);

@@ -6,6 +6,8 @@ import { MatSidenavContainer } from '@angular/material/sidenav';
 import { MatSidenav } from '@angular/material/sidenav';
 import { HeaderComponent } from '../header/header.component';
 import { SidenavComponent } from '../sidenav/sidenav.component';
+import { DatabaseService } from '../services/database.service';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-admin',
@@ -17,8 +19,28 @@ import { SidenavComponent } from '../sidenav/sidenav.component';
 export class AdminComponent {
   user: User;
 
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private databaseService: DatabaseService,
+    private notificationService: NotificationService
+  ) {
     this.user = this.authService.getUser();
+  }
+
+  returnAllItems() {
+    this.databaseService.returnAllItems().subscribe({
+      next: (response: any) => {
+        this.notificationService.showNotification(
+          'All items have been returned.'
+        );
+      },
+      error: (error: any) => {
+        this.notificationService.showNotification(
+          'There was an error returning all items: ' + error.error.error
+        );
+      },
+    });
   }
 
   navigateTo(path: string) {

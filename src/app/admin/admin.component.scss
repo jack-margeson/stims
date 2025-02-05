@@ -30,3 +30,25 @@
     height: 100%;
     background-color: $background-color-light;
 }
+
+.section-header {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.return-all-button {
+    width: 20%;
+    padding: 10px;
+    margin-left: 20px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: $logout-color;
+    color: $text-color;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.return-all-button:hover {
+    background-color: $logout-color-hover;
+}
