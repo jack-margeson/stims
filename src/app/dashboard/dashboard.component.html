@@ -13,11 +13,15 @@
       <app-sidenav></app-sidenav>
     </mat-sidenav>
     <div class="database-view">
-      <app-database-view [searchTerm]="this.searchTerm"></app-database-view>
+      <app-database-view
+        [searchTerm]="this.searchTerm"
+        [filters]="this.filters"
+      ></app-database-view>
     </div>
     <div class="toolbar">
       <app-toolbar
         (searchTermChange)="onSearchTermChange($event)"
+        (filtersChange)="onFiltersChange($event)"
       ></app-toolbar>
     </div>
   </mat-sidenav-container>

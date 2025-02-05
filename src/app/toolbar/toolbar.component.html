@@ -9,4 +9,25 @@
     placeholder="Search..."
     (input)="onSearchChange($event)"
   />
+
+  <button
+    mat-icon-button
+    class="filter-icon"
+    aria-label="filter-icon"
+    [matMenuTriggerFor]="menu"
+  >
+    <mat-icon>filter_list</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu" [hasBackdrop]="true">
+    <div (click)="$event.stopPropagation()" class="options-container">
+      <form [formGroup]="form">
+        <mat-checkbox
+          formControlName="hideUnavailableItems"
+          class="example-margin"
+        >
+          Hide unavailable items
+        </mat-checkbox>
+      </form>
+    </div>
+  </mat-menu>
 </mat-toolbar>

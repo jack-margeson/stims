@@ -24,8 +24,13 @@ import { SidenavComponent } from '../sidenav/sidenav.component';
 export class DashboardComponent {
   title = 'STIMS';
   searchTerm: string = '';
+  filters: Object = {};
 
   onSearchTermChange(searchTerm: string) {
     this.searchTerm = searchTerm;
+  }
+
+  onFiltersChange(filters: Object) {
+    this.filters = filters;
   }
 }

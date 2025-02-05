@@ -22,7 +22,12 @@ import { repeat, repeatWhen } from 'rxjs';
 })
 export class DatabaseViewComponent implements AfterViewInit {
   @Input() searchTerm: string = '';
+  @Input() filters: object = {};
+
   categories: IDatabaseView[] = [];
+  currentSearchTerm: string = '';
+  currentFilters: any = {};
+  noCategoriesVisible: boolean = false;
 
   constructor(private databaseService: DatabaseService) {
     this.databaseService.getDatabaseViewColumns().subscribe((results) => {
@@ -57,31 +62,50 @@ export class DatabaseViewComponent implements AfterViewInit {
   }
 
   ngOnChanges(changes: any): void {
-    if (changes.searchTerm) {
-      if (changes.searchTerm.currentValue === '') {
-        this.categories.forEach((category) => {
-          category.items.forEach((item) => {
-            item.hidden = false;
-          });
-          category.hidden = false;
-        });
-      } else {
-        this.categories.forEach((category) => {
-          let allItemsHidden = true;
-          category.items.forEach((item) => {
-            item.hidden = !this.search(item, changes.searchTerm.currentValue);
-            if (!item.hidden) {
-              allItemsHidden = false;
-            }
-          });
-
-          category.hidden = allItemsHidden;
-        });
-      }
+    if (changes.filters?.currentValue) {
+      this.currentFilters = changes.filters.currentValue;
     }
+    if (
+      changes.searchTerm?.currentValue ||
+      changes.searchTerm?.currentValue === ''
+    ) {
+      this.currentSearchTerm = changes.searchTerm.currentValue;
+    }
+
+    this.categories.forEach((category) => {
+      category.items.forEach((item) => {
+        item.hidden = false;
+
+        // Apply filters
+        if (this.currentFilters.hideUnavailableItems && item.status !== 1) {
+          item.hidden = true;
+        }
+
+        // Apply search term
+        if (
+          this.currentSearchTerm &&
+          !this.search(item, this.currentSearchTerm)
+        ) {
+          item.hidden = true;
+        }
+
+        // Hide the category if all items are hidden
+        category.hidden = category.items.every((item) => item.hidden);
+      });
+
+      // Show the "No Categories Visible" message if all categories are hidden
+      this.noCategoriesVisible = this.categories.every(
+        (category) => category.hidden
+      );
+    });
   }
 
   search(item: any, searchTerm: string): boolean {
+    // If the search term is empty, return true
+    if (!searchTerm) {
+      return true;
+    }
+
     // Match the item's tag_data
     if (item.tag_data.toString() === searchTerm) {
       return true;

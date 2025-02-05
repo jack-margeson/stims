@@ -1,4 +1,7 @@
 <div class="database-view-container">
+  <div class="no-categories" *ngIf="this.noCategoriesVisible">
+    <p>(Nobody here but us chickens.)</p>
+  </div>
   <ng-container *ngFor="let category of categories; let i = index">
     <div
       *ngIf="!category.hidden"
