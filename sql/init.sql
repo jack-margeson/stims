@@ -62,11 +62,11 @@ INSERT INTO database_types (type_name, tag_type_id, args) VALUES
     -- Item type
     ('item', 
     (SELECT id FROM tag_types WHERE tag_type_name = 'generic'),
-    '["name", "description", "image"]'::json),
+    '["name", "description"]'::json),
     -- Book type
     ('book', 
     (SELECT id FROM tag_types WHERE tag_type_name = 'isbn'),
-    '["title", "author", "publisher", "publication_date", "genre", "language", "image"]'::json);
+    '["title", "author", "publisher", "publication_date", "genre", "language"]'::json);
 
 CREATE TABLE database_view_columns (
     id SERIAL PRIMARY KEY,
