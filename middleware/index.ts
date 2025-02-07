@@ -434,9 +434,11 @@ app.get(
     try {
       const query = `
         SELECT 
-          dt.type_name, 
+          c.id as item_id,
+          dvc.display_name as type_display_name, 
           c.args, 
           u.user_id,
+          u.username,
           u.first_name, 
           u.last_name, 
           u.email, 
@@ -445,6 +447,7 @@ app.get(
         JOIN catalog c ON co.item_id = c.id
         JOIN users u ON co.user_id = u.user_id
         JOIN database_types dt ON c.type_id = dt.id
+        JOIN database_view_columns dvc ON c.type_id = dvc.type_id
         ORDER BY co.checked_out_at DESC;
       `;
       const result = await client.query(query);

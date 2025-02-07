@@ -32,15 +32,31 @@
 }
 
 .section-header {
-    margin-top: 20px;
+    margin: 20px;
+}
+
+.table-container {
     margin-left: 20px;
+    margin-right: 20px;
+}
+
+table {
+    padding: 0 10px;
+    width: 100%;
+    background-color: $background-color !important;
+}
+
+.no-data-found-row {
+    text-align: center;
+    font-size: 20px;
+    color: $text-color;
+    padding: 20px;
 }
 
 .return-all-button {
     width: 20%;
     padding: 10px;
     margin-left: 20px;
-    margin-top: 20px;
     border: none;
     border-radius: 5px;
     background-color: $logout-color;
@@ -50,5 +66,21 @@
 }
 
 .return-all-button:hover {
+    background-color: $logout-color-hover;
+}
+
+.return-button {
+    width: 90%;
+    height: 90%;
+    padding: 5px;
+    border: none;
+    border-radius: 5px;
+    background-color: $logout-color;
+    color: $text-color;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.return-button:hover {
     background-color: $logout-color-hover;
 }
