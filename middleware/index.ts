@@ -394,25 +394,25 @@ app.get(
 );
 
 app.get(
-  '/getCheckedOutItems',
+  '/getCheckedOutItemsByUserId',
   async (req: Request, res: Response): Promise<any> => {
     const { user_id } = req.query;
 
     try {
-      let query = `
+      if (!user_id) {
+        return res.status(400).json({ error: 'Please provide user ID.' });
+      }
+
+      const query = `
       SELECT co.item_id, co.user_id, co.checked_out_at, dvc.display_name, c.tag_data, c.args
       FROM checked_out co
       JOIN catalog c ON co.item_id = c.id
       JOIN database_types dt ON c.type_id = dt.id
       JOIN database_view_columns dvc ON c.type_id = dvc.type_id
+      WHERE co.user_id = $1
       ORDER BY co.checked_out_at DESC
-    `;
-      const queryParams: (string | number)[] = [];
-
-      if (user_id) {
-        query += ' WHERE co.user_id = $1';
-        queryParams.push(Number(user_id));
-      }
+        `;
+      const queryParams: (string | number)[] = [Number(user_id)];
 
       const result = await client.query(query, queryParams);
 
@@ -423,6 +423,41 @@ app.get(
       res.json(result.rows);
     } catch (err) {
       console.error('Error fetching checked out items', err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+);
+
+app.get(
+  '/getAllCheckedOutItems',
+  async (req: Request, res: Response): Promise<any> => {
+    try {
+      const query = `
+        SELECT 
+          dt.type_name, 
+          c.args, 
+          u.user_id,
+          u.first_name, 
+          u.last_name, 
+          u.email, 
+          co.checked_out_at
+        FROM checked_out co
+        JOIN catalog c ON co.item_id = c.id
+        JOIN users u ON co.user_id = u.user_id
+        JOIN database_types dt ON c.type_id = dt.id
+        ORDER BY co.checked_out_at DESC;
+      `;
+      const result = await client.query(query);
+
+      if (result.rows.length === 0) {
+        return res
+          .status(404)
+          .json({ error: 'No currently checked out items found.' });
+      }
+
+      res.json(result.rows);
+    } catch (err) {
+      console.error('Error fetching currently checked out items', err);
       res.status(500).json({ error: 'Internal server error' });
     }
   }

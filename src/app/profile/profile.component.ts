@@ -54,34 +54,36 @@ export class ProfileComponent {
       },
     });
 
-    this.databaseService.getCheckedOutItems().subscribe({
-      next: (items: any) => {
-        this.checkedOutItems = items.map((item: any) => {
-          return {
-            ...item,
-            name: item.args[Object.getOwnPropertyNames(item.args)[0]],
-            checked_out_at: new Date(item.checked_out_at).toLocaleString(
-              'en-US',
-              {
-                month: '2-digit',
-                day: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true,
-              }
-            ),
-          };
-        });
-      },
-      error: (error) => {
-        // this.notificationService.showNotification(
-        //   'Error getting checked out items: ' + error.error.error
-        // );
+    this.databaseService
+      .getCheckedOutItemsByUserId(this.user.user_id)
+      .subscribe({
+        next: (items: any) => {
+          this.checkedOutItems = items.map((item: any) => {
+            return {
+              ...item,
+              name: item.args[Object.getOwnPropertyNames(item.args)[0]],
+              checked_out_at: new Date(item.checked_out_at).toLocaleString(
+                'en-US',
+                {
+                  month: '2-digit',
+                  day: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: true,
+                }
+              ),
+            };
+          });
+        },
+        error: (error) => {
+          // this.notificationService.showNotification(
+          //   'Error getting checked out items: ' + error.error.error
+          // );
 
-        this.checkedOutItems = [];
-      },
-    });
+          this.checkedOutItems = [];
+        },
+      });
   }
 
   returnItem(user_id: any, item_id: any) {

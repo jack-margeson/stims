@@ -56,14 +56,14 @@ export class DatabaseService {
     });
   }
 
-  getCheckedOutItems(user_id?: any): Observable<any[]> {
+  getCheckedOutItemsByUserId(user_id?: any): Observable<any[]> {
     const params: any = {};
     if (user_id) {
       params.user_id = user_id;
     }
 
     return this.httpClient
-      .get(`${this.base_url}getCheckedOutItems`, {
+      .get(`${this.base_url}getCheckedOutItemsByUserId`, {
         params: params,
       })
       .pipe(
@@ -71,6 +71,14 @@ export class DatabaseService {
           return items.map((item: any) => item as any);
         })
       );
+  }
+
+  getAllCheckedOutItems(): Observable<any[]> {
+    return this.httpClient.get(`${this.base_url}getAllCheckedOutItems`).pipe(
+      map((items: any) => {
+        return items.map((item: any) => item as any);
+      })
+    );
   }
 
   returnAllItems(): Observable<any> {
