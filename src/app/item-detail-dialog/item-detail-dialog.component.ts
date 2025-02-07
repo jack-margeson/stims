@@ -26,9 +26,7 @@ export class ItemDetailDialogComponent implements AfterContentInit {
     private notificationService: NotificationService
   ) {
     Object.getOwnPropertyNames(this.item.args).forEach((arg) => {
-      if (arg != 'image') {
-        this.orderedItemArgs.push([arg, this.item.args[arg]]);
-      }
+      this.orderedItemArgs.push([arg, this.item.args[arg]]);
     });
   }
 

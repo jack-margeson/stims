@@ -111,8 +111,7 @@ export class DatabaseViewComponent implements AfterViewInit {
       return true;
     }
 
-    // Search all keys in the item except "image"
-    const excludedKeys = ['image', 'publication_date'];
+    const excludedKeys = ['publication_date'];
     for (const key in item.args) {
       if (
         !excludedKeys.includes(key) &&
