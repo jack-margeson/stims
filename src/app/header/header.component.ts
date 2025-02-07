@@ -13,17 +13,13 @@ import { User } from '../classes/user';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent implements AfterViewInit {
+export class HeaderComponent {
   @Output() toggleSidenav = new EventEmitter<void>();
 
   user: User;
 
   constructor(private router: Router, private authService: AuthService) {
     this.user = this.authService.getUser();
-  }
-
-  ngAfterViewInit() {
-    document.getElementById('username')!.innerHTML = '@' + this.user.username;
   }
 
   navigateTo(path: string) {
