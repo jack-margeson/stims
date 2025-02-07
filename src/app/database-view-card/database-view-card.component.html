@@ -11,8 +11,12 @@
           mat-card-sm-image
           src="{{ this.item.image || 'assets/png/no_img_available.png' }}"
         />
-        <mat-card-title>{{ orderedItemArgs[0][1] }}</mat-card-title>
-        <mat-card-subtitle>{{ orderedItemArgs[1][1] }}</mat-card-subtitle>
+        <mat-card-title>{{
+          this.truncate(orderedItemArgs[0][1], 45)
+        }}</mat-card-title>
+        <mat-card-subtitle>{{
+          this.truncate(orderedItemArgs[1][1], 100)
+        }}</mat-card-subtitle>
       </mat-card-title-group>
     </mat-card-header>
     <mat-card-content></mat-card-content>

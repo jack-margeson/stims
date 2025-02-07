@@ -48,15 +48,24 @@
     
 }
 
+.item-detail-display-container {
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 95%;
+    text-align: center;
+    overflow: hidden;
+}
+
 .display-name {
     font-size: 24px;
     font-weight: bold;
-    margin-bottom: 0px;
+    margin: 0px;
 }
 
-.display-description {
+.display-desc {
     font-size: 18px;
-    margin-top: 0px;
 }
 
 .item-detail-image {

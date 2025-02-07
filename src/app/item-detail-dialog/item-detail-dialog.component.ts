@@ -82,4 +82,10 @@ export class ItemDetailDialogComponent implements AfterContentInit {
   titlefy(arg: string): string {
     return arg.replace(/_/g, ' ').replace(/\b\w/, (char) => char.toUpperCase());
   }
+
+  truncate(string: string, length: number): string {
+    return string.length > length
+      ? string.substring(0, length) + '...'
+      : string;
+  }
 }

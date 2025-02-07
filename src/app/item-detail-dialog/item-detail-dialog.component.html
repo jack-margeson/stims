@@ -4,8 +4,12 @@
       class="item-detail-image"
       src="{{ this.item.image || 'assets/png/no_img_available.png' }}"
     />
-    <p class="display-name">{{ orderedItemArgs[0][1] }}</p>
-    <p class="display-desc">{{ orderedItemArgs[1][1] }}</p>
+    <div class="item-detail-display-container">
+      <p class="display-name">{{ this.truncate(orderedItemArgs[0][1], 45) }}</p>
+      <p class="display-desc">
+        {{ this.truncate(orderedItemArgs[1][1], 100) }}
+      </p>
+    </div>
   </div>
   <div class="inner-container-right">
     <div class="arg-table-container">
