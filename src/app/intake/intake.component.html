@@ -13,7 +13,47 @@
       <app-sidenav></app-sidenav>
     </mat-sidenav>
     <div class="intake-container">
-      <p>Intake placeholder!</p>
+      <h3 class="intake-headers">Add New Item</h3>
+      <div class="form-container">
+        <form [formGroup]="form">
+          <mat-form-field
+            ><mat-label>Item Type</mat-label>
+            <mat-select
+              matNativeControl
+              formControlName="itemType"
+              name="itemType"
+            >
+              @for (itemType of itemTypes; track itemType) {
+              <mat-option [value]="itemType.id">{{
+                itemType.display_name
+              }}</mat-option>
+              }
+            </mat-select></mat-form-field
+          >
+          <div *ngIf="this.selectedItemType != null">
+            <h4>Tag Data</h4>
+            <mat-form-field>
+              <mat-label>Tag Data</mat-label>
+              <input
+                matNativeControl
+                formControlName="tagData"
+                name="tagData"
+              />
+            </mat-form-field>
+          </div>
+          <div formGroupName="args" *ngIf="this.selectedItemType != null">
+            <h4>Item Information</h4>
+            <mat-form-field *ngFor="let arg of this.selectedItemType.args">
+              <mat-label>{{ titlefy(arg) }}</mat-label>
+              <input
+                matNativeControl
+                formControlName="{{ arg }}"
+                name="{{ arg }}"
+              />
+            </mat-form-field>
+          </div>
+        </form>
+      </div>
     </div>
   </mat-sidenav-container>
 </div>

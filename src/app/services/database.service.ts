@@ -43,6 +43,14 @@ export class DatabaseService {
     );
   }
 
+  getDatabaseItemTypes(): Observable<any[]> {
+    return this.httpClient.get(`${this.base_url}getDatabaseItemTypes`).pipe(
+      map((itemTypes: any) => {
+        return itemTypes.map((itemType: any) => itemType as any);
+      })
+    );
+  }
+
   checkout(user_id: any, item_id: any): Observable<any> {
     return this.httpClient.post(`${this.base_url}checkout`, null, {
       params: {
