@@ -9,10 +9,20 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { HeaderComponent } from '../header/header.component';
 import { SidenavComponent } from '../sidenav/sidenav.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormGroupDirective,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { DatabaseService } from '../services/database.service';
 import { CommonModule } from '@angular/common';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { NotificationService } from '../services/notification.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-intake',
@@ -28,6 +38,10 @@ import { CommonModule } from '@angular/common';
     MatFormFieldModule,
     HeaderComponent,
     SidenavComponent,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule,
+    MatTooltipModule,
   ],
   templateUrl: './intake.component.html',
   styleUrl: './intake.component.scss',
@@ -43,7 +57,8 @@ export class IntakeComponent {
     private authService: AuthService,
     private router: Router,
     private fb: FormBuilder,
-    private databaseService: DatabaseService
+    private databaseService: DatabaseService,
+    private notificationService: NotificationService
   ) {
     this.user = this.authService.getUser();
 
@@ -53,8 +68,9 @@ export class IntakeComponent {
     });
 
     this.form = this.fb.group({
-      itemType: [''],
-      tagData: [''],
+      itemType: ['', Validators.required],
+      tagData: ['', Validators.required],
+      image: [''],
     });
 
     this.form.valueChanges.subscribe((value) => {
@@ -63,7 +79,7 @@ export class IntakeComponent {
           (itemType) => itemType.id === value.itemType
         );
 
-        const argsObject = this.selectedItemType.args.reduce(
+        const argsObject = this.selectedItemType?.args.reduce(
           (acc: any, arg: any) => {
             acc[arg] = '';
             return acc;
@@ -71,16 +87,90 @@ export class IntakeComponent {
           {}
         );
 
+        // Reset the form and then include the new arguments.
+        this.form.patchValue({ tagData: '', image: '' }, { emitEvent: false });
         this.form.removeControl('args', { emitEvent: false });
-        this.form.addControl('args', this.fb.group(argsObject), {
-          emitEvent: false,
-        });
-
-        console.log(this.form.value);
-      } else {
-        console.log(this.form.value);
+        const argsGroup = this.fb.group(
+          Object.keys(argsObject).reduce((acc: any, key: string) => {
+            acc[key] = ['', Validators.required];
+            return acc;
+          }, {})
+        );
+        this.form.addControl('args', argsGroup, { emitEvent: false });
+        // Blank out the image input.
+        document
+          .getElementById('imageInput')
+          ?.setAttribute('src', 'assets/png/no_img_available.png');
       }
     });
+  }
+
+  getFormType(arg: string) {
+    if (arg.includes('date')) {
+      return 'date';
+    } else {
+      return 'default';
+    }
+  }
+
+  findImage(): void {
+    if (this.form.value['tagData'] === '') {
+      this.notificationService.showNotification('No tag data provided.');
+    } else {
+      this.databaseService.getBookCover(this.form.value['tagData']).subscribe(
+        (data) => {
+          this.notificationService.showNotification('Book cover found.');
+          this.form.patchValue({ image: data });
+          document.getElementById('imageInput')?.setAttribute('src', data);
+        },
+        (error) => {
+          this.notificationService.showNotification('Book cover not found.');
+          document
+            .getElementById('imageInput')
+            ?.setAttribute('src', 'assets/png/no_img_available.png');
+        }
+      );
+    }
+  }
+
+  addItem(event: any): void {
+    event.preventDefault();
+
+    if (this.form.valid) {
+      // Construct the item object for submission
+      const item: any = {
+        type_id: this.form.value.itemType,
+        tag_data: this.form.value.tagData,
+        args: JSON.stringify(this.form.value.args),
+        image: this.form.value.image,
+        status: 1,
+      };
+
+      this.databaseService.addItem(item).subscribe(
+        (response) => {
+          this.notificationService.showNotification('Item added successfully.');
+
+          // Reset everything but the item type, clear the validators
+          this.form.reset({
+            itemType: this.form.value.itemType,
+          });
+          this.form.clearValidators();
+          this.form.updateValueAndValidity();
+          document
+            .getElementById('imageInput')
+            ?.setAttribute('src', 'assets/png/no_img_available.png');
+        },
+        (error) => {
+          this.notificationService.showNotification(
+            'Error adding item: ' + error.error.error
+          );
+        }
+      );
+    } else {
+      this.notificationService.showNotification(
+        'Please fill out all required fields.'
+      );
+    }
   }
 
   navigateTo(path: string) {

@@ -14,19 +14,6 @@ export class DatabaseService {
 
   constructor(private httpClient: HttpClient) {}
 
-  getBookCover(isbn: string): Observable<any> {
-    return this.httpClient
-      .get(`${this.book_cover_url}${isbn}-L.jpg`, {
-        responseType: 'blob',
-        observe: 'response',
-      })
-      .pipe(
-        map((response) => {
-          return response.url;
-        })
-      );
-  }
-
   getCatalogData(): Observable<any[]> {
     return this.httpClient.get(`${this.base_url}getCatalogData`).pipe(
       map((catalog: any) => {
@@ -88,5 +75,22 @@ export class DatabaseService {
 
   returnAllItems(): Observable<any> {
     return this.httpClient.post(`${this.base_url}returnAllItems`, null);
+  }
+
+  addItem(item: Object): Observable<any> {
+    return this.httpClient.post(`${this.base_url}addItem`, item);
+  }
+
+  getBookCover(isbn: string): Observable<any> {
+    return this.httpClient
+      .get(`${this.book_cover_url}${isbn}-L.jpg?default=false`, {
+        responseType: 'blob',
+        observe: 'response',
+      })
+      .pipe(
+        map((response) => {
+          return response.url;
+        })
+      );
   }
 }

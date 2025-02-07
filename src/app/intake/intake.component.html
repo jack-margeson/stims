@@ -13,10 +13,10 @@
       <app-sidenav></app-sidenav>
     </mat-sidenav>
     <div class="intake-container">
-      <h3 class="intake-headers">Add New Item</h3>
+      <h2 class="intake-headers">Add New Item</h2>
       <div class="form-container">
         <form [formGroup]="form">
-          <mat-form-field
+          <mat-form-field [hideRequiredMarker]="true"
             ><mat-label>Item Type</mat-label>
             <mat-select
               matNativeControl
@@ -32,7 +32,7 @@
           >
           <div *ngIf="this.selectedItemType != null">
             <h4>Tag Data</h4>
-            <mat-form-field>
+            <mat-form-field [hideRequiredMarker]="true">
               <mat-label>Tag Data</mat-label>
               <input
                 matNativeControl
@@ -42,15 +42,80 @@
             </mat-form-field>
           </div>
           <div formGroupName="args" *ngIf="this.selectedItemType != null">
-            <h4>Item Information</h4>
-            <mat-form-field *ngFor="let arg of this.selectedItemType.args">
-              <mat-label>{{ titlefy(arg) }}</mat-label>
-              <input
-                matNativeControl
-                formControlName="{{ arg }}"
-                name="{{ arg }}"
-              />
-            </mat-form-field>
+            <div class="information-container-titles">
+              <h4>{{ this.selectedItemType.display_name }} Information</h4>
+              <h4>{{ this.selectedItemType.display_name }} Image</h4>
+            </div>
+            <div class="information-container">
+              <div class="input-container">
+                <mat-form-field
+                  class="form-field"
+                  [hideRequiredMarker]="true"
+                  *ngFor="let arg of this.selectedItemType.args"
+                >
+                  <mat-label>{{ titlefy(arg) }}</mat-label>
+                  <input
+                    *ngIf="this.getFormType(arg) === 'default'"
+                    matInput
+                    formControlName="{{ arg }}"
+                    name="{{ arg }}"
+                    class="default-form-input"
+                  />
+                  <ng-container *ngIf="this.getFormType(arg) === 'date'">
+                    <div class="date-picker">
+                      <input
+                        matInput
+                        [matDatepicker]="datePicker"
+                        formControlName="{{ arg }}"
+                        name="{{ arg }}"
+                      />
+                      <mat-datepicker-toggle
+                        matSuffix
+                        [for]="datePicker"
+                      ></mat-datepicker-toggle>
+                      <mat-datepicker #datePicker></mat-datepicker>
+                    </div>
+                  </ng-container>
+                </mat-form-field>
+              </div>
+              <div class="image-input-container">
+                <img
+                  id="imageInput"
+                  class="image-input"
+                  src="{{ 'assets/png/no_img_available.png' }}"
+                />
+                <div class="find-image-container">
+                  <button
+                    mat-raised-button
+                    class="find-image-button"
+                    (click)="findImage()"
+                    type="button"
+                    [disabled]="
+                      !this.selectedItemType.display_name
+                        .toLowerCase()
+                        .includes('book')
+                    "
+                  >
+                    Find Image
+                  </button>
+                  <mat-icon
+                    matTooltip="Attempt to find an image for the item based upon the tag data. Currently only available for Books."
+                    >info</mat-icon
+                  >
+                </div>
+              </div>
+            </div>
+            <div class="submit-container">
+              <button
+                mat-raised-button
+                class="submit-button"
+                (click)="addItem($event)"
+                type="submit"
+                [disabled]="false"
+              >
+                Add Item
+              </button>
+            </div>
           </div>
         </form>
       </div>

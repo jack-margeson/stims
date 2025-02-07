@@ -462,6 +462,36 @@ app.post(
   }
 );
 
+// Add a new item to the catalog
+app.post('/addItem', async (req: Request, res: Response): Promise<any> => {
+  const { type_id, tag_data, args, status, image } = req.body;
+
+  if (!type_id || !tag_data || !args || !status) {
+    return res.status(400).json({
+      error: 'Please provide type_id, tag_data, args, and status for the item.',
+    });
+  }
+
+  try {
+    const query = `
+      INSERT INTO catalog (type_id, tag_data, args, status, image)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *;
+    `;
+    const values = [type_id, tag_data, args, status, image || ''];
+
+    const result = await client.query(query, values);
+
+    res.status(201).json({
+      message: 'Item added to catalog successfully.',
+      item: result.rows[0],
+    });
+  } catch (err) {
+    console.error('Error adding item to catalog', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Start the Express server
 app.listen(port, () => {
   console.log(`The server is running at http://localhost:${port}`);
