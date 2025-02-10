@@ -99,6 +99,9 @@ export class AdminComponent {
         this.notificationService.showNotification(
           'All items have been returned.'
         );
+
+        // Clear the checked out items list locally
+        this.allCheckedOutItems = [];
       },
       error: (error: any) => {
         this.notificationService.showNotification(
