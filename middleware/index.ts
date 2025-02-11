@@ -586,9 +586,13 @@ app.post('/addItemType', async (req: Request, res: Response): Promise<any> => {
       itemType: typeResult.rows[0],
       viewColumn: viewResult.rows[0],
     });
-  } catch (err) {
+  } catch (err: any) {
     console.error('Error adding item type', err);
-    res.status(500).json({ error: 'Internal server error' });
+    if (err.code === '23505') {
+      res.status(409).json({ error: 'Type name already exists.' });
+    } else {
+      res.status(500).json({ error: 'Internal server error' });
+    }
   }
 });
 // Start the Express server

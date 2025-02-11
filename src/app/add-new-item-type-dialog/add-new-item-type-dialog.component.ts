@@ -69,7 +69,8 @@ export class AddNewItemTypeDialogComponent implements AfterContentInit {
 
     this.form.valueChanges.subscribe(() => {
       console.log(this.form.value);
-      this.submitDisabled = this.form.invalid;
+      this.submitDisabled =
+        this.form.invalid || this.form.value.args.length < 2;
     });
   }
 
@@ -155,11 +156,18 @@ export class AddNewItemTypeDialogComponent implements AfterContentInit {
       display_name_plural: this.form.value.type_name_plural,
       type_name: this.form.value.type_name.toLowerCase(),
     };
-    this.databaseService.addItemType(itemType).subscribe((response) => {
-      this.notificationService.showNotification(
-        'Item type added successfully.'
-      );
-      this.dialogRef.close();
-    });
+    this.databaseService.addItemType(itemType).subscribe(
+      (response) => {
+        this.notificationService.showNotification(
+          'Item type added successfully.'
+        );
+        this.dialogRef.close();
+      },
+      (error) => {
+        this.notificationService.showNotification(
+          'Failed to add item type: ' + error.error.error
+        );
+      }
+    );
   }
 }
