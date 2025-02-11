@@ -69,6 +69,22 @@ table {
     background-color: $logout-color-hover;
 }
 
+.create-new-item-type-button {
+    width: 20%;
+    padding: 10px;
+    margin-left: 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: $button-bg-color;
+    color: $text-color;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.create-new-item-type-button:hover {
+    background-color: $button-hover-bg-color;
+}
+
 .return-button {
     width: 90%;
     height: 90%;

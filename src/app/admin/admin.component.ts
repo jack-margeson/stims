@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, inject, NgModule } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { User } from '../classes/user';
@@ -9,6 +9,8 @@ import { SidenavComponent } from '../sidenav/sidenav.component';
 import { DatabaseService } from '../services/database.service';
 import { NotificationService } from '../services/notification.service';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { AddNewItemTypeDialogComponent } from '../add-new-item-type-dialog/add-new-item-type-dialog.component';
 
 @Component({
   selector: 'app-admin',
@@ -35,6 +37,8 @@ export class AdminComponent {
     'checkedOutAt',
     'null',
   ];
+
+  readonly dialog = inject(MatDialog);
 
   constructor(
     private authService: AuthService,
@@ -108,6 +112,26 @@ export class AdminComponent {
           'There was an error returning all items: ' + error.error.error
         );
       },
+    });
+  }
+
+  onClickNewItemType(): void {
+    // open modal
+    this.openDialog('300ms', '500ms');
+  }
+
+  openDialog(
+    enterAnimationDuration: string,
+    exitAnimationDuration: string
+  ): void {
+    this.dialog.open(AddNewItemTypeDialogComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '85%',
+      width: '70%',
+      data: null,
+      enterAnimationDuration,
+      exitAnimationDuration,
     });
   }
 

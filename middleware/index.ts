@@ -530,6 +530,67 @@ app.post('/addItem', async (req: Request, res: Response): Promise<any> => {
   }
 });
 
+// Add a new item type
+app.post('/addItemType', async (req: Request, res: Response): Promise<any> => {
+  const {
+    type_name,
+    tag_type_id,
+    args,
+    display_name,
+    display_name_plural,
+    description,
+    icon,
+  } = req.body;
+
+  if (
+    !type_name ||
+    !tag_type_id ||
+    !args ||
+    !display_name ||
+    !display_name_plural
+  ) {
+    return res.status(400).json({
+      error:
+        'Please provide type_name, tag_type_id, args, display_name, and display_name_plural for the item type.',
+    });
+  }
+
+  try {
+    // Insert into database_types table
+    const typeQuery = `
+      INSERT INTO database_types (type_name, tag_type_id, args)
+      VALUES ($1, $2, $3)
+      RETURNING *;
+    `;
+    const typeValues = [type_name, tag_type_id, JSON.stringify(args)];
+    const typeResult = await client.query(typeQuery, typeValues);
+
+    // Insert into database_view_columns table
+    const viewQuery = `
+      INSERT INTO database_view_columns (type_id, type_name, display_name, display_name_plural, description, icon)
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING *;
+    `;
+    const viewValues = [
+      typeResult.rows[0].id,
+      type_name,
+      display_name,
+      display_name_plural,
+      description || '',
+      icon || '',
+    ];
+    const viewResult = await client.query(viewQuery, viewValues);
+
+    res.status(201).json({
+      message: 'Item type added successfully.',
+      itemType: typeResult.rows[0],
+      viewColumn: viewResult.rows[0],
+    });
+  } catch (err) {
+    console.error('Error adding item type', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 // Start the Express server
 app.listen(port, () => {
   console.log(`The server is running at http://localhost:${port}`);

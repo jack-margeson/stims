@@ -22,6 +22,7 @@
     "@angular/router": "^18.2.0",
     "express-generator": "^4.16.1",
     "mariadb": "^3.3.2",
+    "ngx-icon-picker": "^1.11.2",
     "rxjs": "~7.8.0",
     "sqlite3": "^5.1.7",
     "tslib": "^2.3.0",

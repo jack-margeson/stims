@@ -1,0 +1,145 @@
+<div class="add-new-item-type-dialog-container">
+  <form style="width: 100%; height: 100%" [formGroup]="form">
+    <div class="top-container">
+      <div class="header-container">
+        <h3>Step 1: Define Item Attributes</h3>
+        <mat-icon
+          matTooltip="First, define what information you'd like to store for this item type. For example, a Book type might store the title, author, genre..."
+          >info</mat-icon
+        >
+      </div>
+
+      <div class="input-container">
+        <div class="type-name-container">
+          <mat-form-field>
+            <mat-label>Item Type Name</mat-label>
+            <input
+              matInput
+              formControlName="type_name"
+              placeholder="e.g. Book"
+            />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Item Type Name (plural)</mat-label>
+            <input
+              matInput
+              formControlName="type_name_plural"
+              placeholder="e.g. Books"
+            />
+          </mat-form-field>
+        </div>
+        <div class="type-attributes-input-container">
+          <mat-form-field class="chip-list">
+            <mat-label>Item Attributes</mat-label>
+            <mat-chip-grid #chipGrid aria-label="Enter attributes">
+              @for (arg of this.form.value.args; track arg) {
+              <mat-chip-row
+                (removed)="remove(arg)"
+                [editable]="true"
+                (edited)="edit(arg, $event)"
+                [aria-description]="'press enter to edit ' + arg"
+              >
+                {{ arg }}
+                <button matChipRemove [attr.aria-label]="'remove ' + arg">
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+              }
+              <input
+                placeholder="New attribute..."
+                [matChipInputFor]="chipGrid"
+                [matChipInputSeparatorKeyCodes]="separatorKeyCodes"
+                [matChipInputAddOnBlur]="true"
+                (matChipInputTokenEnd)="add($event)"
+              />
+            </mat-chip-grid>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom-container">
+      <div class="bottom-container-left">
+        <div class="header-container">
+          <h3>Step 2: Order Attributes</h3>
+          <mat-icon
+            matTooltip="Then, order the attributes you've defined. The first and second attributes are the most important--they'll be what shows up as the title and description of the item on the Dashboard."
+            >info</mat-icon
+          >
+        </div>
+
+        <div class="arg-list-container">
+          <div
+            cdkDropList
+            class="args-list"
+            (cdkDropListDropped)="drop($event)"
+          >
+            <div
+              class="arg-box"
+              *ngFor="let arg of this.form.value.args; let i = index"
+              [ngClass]="{
+                'arg-box-first': i === 0,
+                'arg-box-second': i === 1
+              }"
+              cdkDrag
+            >
+              {{ arg }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-container-right">
+        <div class="header-container">
+          <h3>Step 3: Choose an Icon</h3>
+          <mat-icon
+            matTooltip="Finally, choose an icon to be displayed next to this type's name in the column header on the Dashboard."
+            >info</mat-icon
+          >
+        </div>
+
+        <div class="picker-container">
+          <div class="picker-input-group">
+            <mat-icon>{{ this.form.value.icon }}</mat-icon>
+            <mat-form-field>
+              <input
+                id="iconInput"
+                matInput
+                name="iconCss"
+                class="form-control"
+                [iconPicker]="this.form.value.icon"
+                [ipPosition]="'bottom'"
+                [ipWidth]="'250px'"
+                [ipIconSize]="'20px'"
+                [ipIconVerticalPadding]="'6px'"
+                [ipIconHorizontalPadding]="'10px'"
+                [ipKeepSearchFilter]="'false'"
+                [ipPlaceHolder]="'Tab to search icons...'"
+                [ipFallbackIcon]="'book'"
+                [ipIconPack]="['mat']"
+                (iconPickerSelect)="onIconPickerSelect($event)"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="submit-cancel-container">
+          <button id="cancel" mat-raised (click)="cancel()">
+            <mat-icon>cancel</mat-icon>
+
+            Cancel
+          </button>
+          <button
+            id="submit"
+            mat-raised
+            [disabled]="this.submitDisabled"
+            (click)="submit()"
+          >
+            <mat-icon>done</mat-icon>
+
+            Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -89,6 +89,10 @@ export class DatabaseService {
     return this.httpClient.post(`${this.base_url}addItem`, item);
   }
 
+  addItemType(itemType: Object): Observable<any> {
+    return this.httpClient.post(`${this.base_url}addItemType`, itemType);
+  }
+
   getBookCover(isbn: string): Observable<any> {
     return this.httpClient
       .get(`${this.book_cover_url}${isbn}-L.jpg?default=false`, {

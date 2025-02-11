@@ -85,6 +85,17 @@
         </div>
       </div>
 
+      <div class="admin-commands-container">
+        <h3 class="section-header">Admin commands</h3>
+        <button
+          class="create-new-item-type-button"
+          mat-button
+          (click)="onClickNewItemType()"
+        >
+          Create New Item Type
+        </button>
+      </div>
+
       <div class="debug-commands-container">
         <h3 class="section-header">Debug commands</h3>
         <button class="return-all-button" mat-button (click)="returnAllItems()">

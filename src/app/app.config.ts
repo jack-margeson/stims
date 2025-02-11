@@ -13,6 +13,7 @@ import {
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { Observable, tap } from 'rxjs';
+import { IconPickerService } from 'ngx-icon-picker';
 
 // const loggingInterceptor = (
 //   req: HttpRequest<any>,
@@ -36,6 +37,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimationsAsync(),
     provideHttpClient(),
+    IconPickerService,
     // withInterceptors([loggingInterceptor])
   ],
 };
