@@ -69,8 +69,9 @@ export class AddNewItemTypeDialogComponent implements AfterContentInit {
 
     this.form.valueChanges.subscribe(() => {
       console.log(this.form.value);
-      this.submitDisabled =
-        !this.form.invalid && this.form.value.args.length >= 2;
+      this.submitDisabled = !(
+        this.form.valid && this.form.value.args.length >= 2
+      );
     });
   }
 
