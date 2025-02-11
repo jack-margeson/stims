@@ -81,6 +81,27 @@ export class DatabaseService {
     );
   }
 
+  getAllRoles(): Observable<any[]> {
+    return this.httpClient.get(`${this.base_url}getAllRoles`).pipe(
+      map((roles: any) => {
+        return roles.map((role: any) => role as any);
+      })
+    );
+  }
+
+  getAllUsers(): Observable<any[]> {
+    return this.httpClient.get(`${this.base_url}getAllUsers`).pipe(
+      map((users: any) => {
+        return users.map((user: any) => user as any);
+      })
+    );
+  }
+
+  editUserRoles(payload: any): Observable<any> {
+    console.log(payload);
+    return this.httpClient.post(`${this.base_url}editUserRoles`, payload);
+  }
+
   returnAllItems(): Observable<any> {
     return this.httpClient.post(`${this.base_url}returnAllItems`, null);
   }

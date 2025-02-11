@@ -11,6 +11,7 @@ import { NotificationService } from '../services/notification.service';
 import { MatTableModule, MatTableDataSource } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { AddNewItemTypeDialogComponent } from '../add-new-item-type-dialog/add-new-item-type-dialog.component';
+import { AssignUserRolesDialogComponent } from '../assign-user-roles-dialog/assign-user-roles-dialog.component';
 
 @Component({
   selector: 'app-admin',
@@ -117,19 +118,33 @@ export class AdminComponent {
 
   onClickNewItemType(): void {
     // open modal
-    this.openDialog('300ms', '500ms');
+    this.openDialog(AddNewItemTypeDialogComponent, '300ms', '500ms');
+  }
+
+  onClickAssignUserRoles(): void {
+    this.openDialog(
+      AssignUserRolesDialogComponent,
+      '300ms',
+      '500ms',
+      '30%',
+      '70%'
+    );
   }
 
   openDialog(
+    component: any,
     enterAnimationDuration: string,
-    exitAnimationDuration: string
+    exitAnimationDuration: string,
+    width: string = '70%',
+    height: string = '85%',
+    data: any = null
   ): void {
-    this.dialog.open(AddNewItemTypeDialogComponent, {
+    this.dialog.open(component, {
       maxWidth: '100vw',
       maxHeight: '100vh',
-      height: '85%',
-      width: '70%',
-      data: null,
+      width: width,
+      height: height,
+      data: data,
       enterAnimationDuration,
       exitAnimationDuration,
     });

@@ -81,6 +81,67 @@ app.get('/user', async (req: Request, res: Response): Promise<any> => {
   }
 });
 
+// Get all users with their roles
+app.get('/getAllUsers', async (req: Request, res: Response): Promise<any> => {
+  try {
+    const query = `
+      SELECT 
+      u.user_id, 
+      u.first_name, 
+      u.last_name, 
+      u.username, 
+      json_agg(json_build_object('role_id', r.role_id, 'role_name', r.role_name, 'role_display_name', r.role_display_name)) AS roles
+      FROM users u
+      LEFT JOIN user_roles ur ON u.user_id = ur.user_id
+      LEFT JOIN roles r ON ur.role_id = r.role_id
+      GROUP BY u.user_id
+      ORDER BY u.user_id;
+    `;
+    const result = await client.query(query);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'No users found.' });
+    }
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching users.', err);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
+
+// Edit user roles
+app.post(
+  '/editUserRoles',
+  async (req: Request, res: Response): Promise<any> => {
+    const { user_id, roles } = req.body;
+
+    if (!user_id || !Array.isArray(roles)) {
+      return res.status(400).json({
+        error: 'Please provide user_id and an array of roles.',
+      });
+    }
+
+    try {
+      // Delete existing roles for the user
+      const deleteQuery = 'DELETE FROM user_roles WHERE user_id = $1';
+      await client.query(deleteQuery, [user_id]);
+
+      // Insert new roles for the user
+      const insertQuery =
+        'INSERT INTO user_roles (user_id, role_id) VALUES ($1, $2)';
+      for (const role_id of roles) {
+        await client.query(insertQuery, [user_id, role_id]);
+      }
+
+      res.status(200).json({ message: 'User roles updated successfully.' });
+    } catch (err) {
+      console.error('Error updating user roles', err);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  }
+);
+
 // Register a new user
 app.post('/register', async (req: Request, res: Response): Promise<any> => {
   if (req.body === undefined) {
@@ -189,6 +250,23 @@ app.get('/roles', async (req: Request, res: Response): Promise<any> => {
     res.json(result.rows);
   } catch (err) {
     console.error('Error fetching role.', err);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
+
+// Get all roles
+app.get('/getAllRoles', async (req: Request, res: Response): Promise<any> => {
+  try {
+    const query = 'SELECT role_id, role_name, role_display_name FROM roles';
+    const result = await client.query(query);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'No roles found.' });
+    }
+
+    res.json(result.rows);
+  } catch (err) {
+    console.error('Error fetching roles.', err);
     res.status(500).json({ error: 'Internal server error.' });
   }
 });

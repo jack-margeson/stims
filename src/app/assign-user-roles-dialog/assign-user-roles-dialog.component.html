@@ -1,0 +1,49 @@
+<div class="assign-user-roles-dialog-container">
+  <form class="assign-user-roles-dialog-form" [formGroup]="form">
+    <div class="user-input-container">
+      <h3>Assign User Roles</h3>
+
+      <mat-form-field>
+        <mat-label>User</mat-label>
+        <mat-select formControlName="user_id" placeholder="Select a user">
+          <mat-option *ngFor="let user of allUsers" [value]="user.user_id">
+            {{ user.username }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="role-select-container">
+      <ng-container *ngIf="selectedUser">
+        <p>{{ selectedUser.username }}'s roles:</p>
+
+        <div *ngFor="let role of allRoles" formGroupName="roles">
+          <mat-checkbox
+            [formControlName]="'role_' + role.role_id"
+            [checked]="false"
+          >
+            {{ role.role_display_name }}
+          </mat-checkbox>
+        </div>
+      </ng-container>
+    </div>
+
+    <div class="submit-cancel-container">
+      <button id="cancel" mat-raised (click)="cancel()">
+        <mat-icon>cancel</mat-icon>
+
+        Cancel
+      </button>
+      <button
+        id="submit"
+        mat-raised
+        [disabled]="this.submitDisabled"
+        (click)="submit()"
+      >
+        <mat-icon>done</mat-icon>
+
+        Submit
+      </button>
+    </div>
+  </form>
+</div>

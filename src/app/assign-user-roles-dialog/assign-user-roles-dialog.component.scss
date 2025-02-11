@@ -1,0 +1,110 @@
+@import "../app.component.variables.scss";
+
+* {
+  //border: 1px solid red;
+  overflow: hidden;
+}
+
+.assign-user-roles-dialog-container {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background-color: $background-color;
+  color: $text-color;
+
+  @media (max-width: $medium-viewport) {
+    flex-direction: column;
+    overflow-y: scroll;
+  }
+}
+
+.assign-user-roles-dialog-form {
+  padding: 20px;
+  padding-top: 0px;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.user-input-container {
+  width: 90%;
+  height: 30%;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.user-input-container > mat-form-field {
+  width: 100%;
+}
+
+.role-select-container {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  align-self: left;
+  align-items: left;
+  justify-content: left;
+}
+
+.submit-cancel-container {
+  width: 90%;
+  margin: 10px 0px;
+  display: flex;
+  flex-direction: row;
+  align-self: center;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.submit-cancel-container > #cancel {
+  flex-grow: 1;
+  padding: 10px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: $logout-color;
+  color: $text-color;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.submit-cancel-container > #cancel:hover {
+  background-color: $logout-color-hover;
+}
+
+.submit-cancel-container > #submit {
+  flex-grow: 2;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: $button-bg-color;
+  color: $text-color;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.submit-cancel-container > #submit:hover {
+  background-color: $button-hover-bg-color;
+}
+
+.submit-cancel-container > #submit:disabled {
+  background-color: $button-bg-disabled;
+  cursor: not-allowed;
+}
