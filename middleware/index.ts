@@ -28,17 +28,17 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Database connection details
 const client = new Client({
-  user: process.env.DB_USER || 'stims_admin',
-  host: process.env.DB_HOST || 'localhost',
+  user: process.env.DB_USER || 'stims_db_admin',
+  host: process.env.DB_HOST || '172.20.0.4',
   database: process.env.DB_NAME || 'stims_db',
-  password: process.env.POSTGRES_PASSWORD,
+  password: 'password',
   port: parseInt(process.env.DB_PORT || '5432', 10),
 });
 
 client
   .connect()
   .then(() => console.log('Connected to the PostgreSQL database'))
-  .catch((err) => console.error('Connection error', err.stack));
+  .catch((err) => console.error('Connection error', err));
 
 // #########
 // Endpoints

@@ -1,0 +1,92 @@
+services:
+  build-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: stims-build-frontend
+    image: stims-build-frontend:latest
+    networks:
+      stims-network:
+        ipv4_address: 172.20.0.6
+    volumes:
+      - stims-frontend-build:/app/dist/stims/browser
+
+  serve-frontend:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: stims-serve-frontend
+    image: stims-serve-frontend:latest
+    restart: always
+    ports:
+      - 4200:4200
+    networks:
+      stims-network:
+        ipv4_address: 172.20.0.2
+    depends_on:
+      - build-frontend
+    volumes:
+      - stims-frontend-build:/usr/share/nginx/html
+
+  middleware:
+    build:
+      context: ./middleware
+      dockerfile: Dockerfile
+    container_name: stims-middleware
+    image: stims-middleware:latest
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      - POSTGRES_USER=stims_db_admin
+      - POSTGRES_PASSWORD=
+    depends_on:
+      - db
+    links:
+      - db
+    networks:
+      stims-network:
+        ipv4_address: 172.20.0.3
+
+  db:
+    build:
+      context: ./sql
+      dockerfile: Dockerfile
+    container_name: stims-db
+    image: stims-db:latest
+    restart: always
+    environment:
+      POSTGRES_USER: stims_db_admin
+      POSTGRES_PASSWORD:
+    volumes:
+      - stims-db:/var/lib/postgresql/data
+      - ./sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5432:5432
+    networks:
+      stims-network:
+        ipv4_address: 172.20.0.4
+
+  adminer:
+    image: adminer
+    container_name: stims-adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      stims-network:
+        ipv4_address: 172.20.0.5
+
+volumes:
+  stims-db:
+    name: stims-db
+  stims-frontend-build:
+    name: stims-frontend-build
+
+networks:
+  stims-network:
+    name: stims-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

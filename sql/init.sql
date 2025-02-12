@@ -1,6 +1,6 @@
 CREATE DATABASE stims_db;
 
-GRANT ALL ON DATABASE stims_db TO stims_admin;
+GRANT ALL ON DATABASE stims_db TO stims_db_admin;
 
 \connect stims_db;
 

@@ -1,8 +1,13 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
+.env
 /sql/.env
 /middleware/.env
 /middleware/node_modules
+/frontend/angular
+/frontend/dist
+/frontend/node_modules
+
 # Compiled output
 /dist
 /tmp
