@@ -8,6 +8,10 @@ GRANT ALL ON DATABASE stims_db TO stims_db_admin;
 
 ALTER DATABASE stims_db SET timezone TO 'UTC';
 
+-- INIT CRYPTOGRAPHY FUNCTIONS
+
+CREATE EXTENSION pgcrypto;
+
 -- USER SETUP
 
 CREATE TABLE users (
