@@ -48,9 +48,9 @@ function main() {
 
     # Ask for install location
     read -p "Enter the install location (default ~/.local/share/): " install_location
-    install_location=${install_location:-~/.local/share/}
-    mkdir -p "$install_location"stims
-    install_location="$install_location"stims
+    install_location=${install_location:-$HOME/.local/share/}
+    mkdir -p "${install_location}stims"
+    install_location="${install_location}stims"
     cd "$install_location" || {
         print_error "Failed to enter install location. Exiting."
         exit 1
