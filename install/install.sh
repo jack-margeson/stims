@@ -4,7 +4,7 @@
 if [ -p /dev/stdin ]; then
     tmpfile=$(mktemp)
     cat - >"$tmpfile"
-    bash "$tmpfile"
+    bash "$tmpfile" </dev/tty
     rm "$tmpfile"
     exit 0
 fi
