@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -e
+trap 'print_error "An error occurred. Exiting.";' ERR
 
 function print_header() {
     local header="$1"
