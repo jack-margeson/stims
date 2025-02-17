@@ -85,7 +85,7 @@ function main() {
             echo -e "STIMS web interface: \e[1;34mhttp://localhost:4200\e[0m"
             echo -e "Adminer database viewer: \e[1;34mhttp://localhost:8080\e[0m"
             echo
-            echo -e "\e[1;32m=================================e[0m"
+            echo -e "\e[1;32m=================================\e[0m"
             exit 0
         else
             print_message "Exiting the installer."
