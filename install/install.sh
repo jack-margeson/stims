@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# If the script is being piped, save it to a temporary file and execute it
+if [ -p /dev/stdin ]; then
+    tmpfile=$(mktemp)
+    cat - >"$tmpfile"
+    bash "$tmpfile"
+    rm "$tmpfile"
+    exit 0
+fi
+
 set -e
 trap 'print_error "An error occurred. Exiting.";' ERR
 
@@ -162,5 +171,4 @@ function main() {
     echo -e "\e[1;32m======================================\e[0m"
 }
 
-trap 'print_error "An error occurred. Exiting.";' ERR
 main
