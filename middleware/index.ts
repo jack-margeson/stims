@@ -4,6 +4,8 @@ import type { Request, Response } from 'express';
 import { Client } from 'pg';
 import swaggerUi from 'swagger-ui-express';
 
+require('dotenv').config();
+
 // Create a new express application instance
 const app = express();
 
@@ -15,12 +17,7 @@ app.use(express.json());
 
 // Enable CORS
 const cors = require('cors');
-app.use(
-  cors({
-    origin: 'http://localhost:4200',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  })
-);
+app.use(cors());
 
 // Import the swagger JSON and display it on the /docs route
 const swaggerDocument = require('./swagger.json');
@@ -29,9 +26,9 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Database connection details
 const client = new Client({
   user: process.env.DB_USER || 'stims_db_admin',
-  host: process.env.DB_HOST || '172.20.0.4',
+  host: process.env.DB_HOST || '0.0.0.0',
   database: process.env.DB_NAME || 'stims_db',
-  password: 'password',
+  password: process.env.DB_PASSWORD,
   port: parseInt(process.env.DB_PORT || '5432', 10),
 });
 

@@ -7,7 +7,7 @@ services:
     image: stims-db:latest
     restart: always
     environment:
-      POSTGRES_USER: stims_admin
+      POSTGRES_USER: stims_db_admin
       POSTGRES_PASSWORD:
     volumes:
       - stims-db:/var/lib/postgresql/data

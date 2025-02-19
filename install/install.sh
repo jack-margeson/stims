@@ -114,6 +114,8 @@ function main() {
 
     # Save the password in a .env file
     echo "POSTGRES_PASSWORD=$admin_password" >.env
+    # Also save to .env for middleware
+    echo "DB_PASSWORD=$admin_password" >./middleware/.env
     echo
 
     # Ask if the user wants to create a new STIMS user account with administrative privileges
