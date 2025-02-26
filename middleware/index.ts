@@ -26,9 +26,9 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Database connection details
 const client = new Client({
   user: process.env.DB_USER || 'stims_db_admin',
-  host: process.env.DB_HOST || '0.0.0.0',
+  host: process.env.DB_HOST || '172.20.0.4',
   database: process.env.DB_NAME || 'stims_db',
-  password: process.env.DB_PASSWORD,
+  password: process.env.POSTGRES_PASSWORD,
   port: parseInt(process.env.DB_PORT || '5432', 10),
 });
 
