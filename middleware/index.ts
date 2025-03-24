@@ -3,6 +3,8 @@ import bcrypt from 'bcrypt';
 import type { Request, Response } from 'express';
 import { Client } from 'pg';
 import swaggerUi from 'swagger-ui-express';
+import axios from 'axios';
+import { JSDOM } from 'jsdom';
 
 require('dotenv').config();
 
@@ -670,6 +672,36 @@ app.post('/addItemType', async (req: Request, res: Response): Promise<any> => {
     }
   }
 });
+
+app.get('/searchImage', async (req: Request, res: Response): Promise<any> => {
+  const { query } = req.query;
+
+  if (!query) {
+    return res.status(400).json({ error: 'Please provide a search query.' });
+  }
+
+  try {
+    const url = `https://www.bing.com/images/search?q=${encodeURIComponent(
+      query as string
+    )}`;
+
+    const response = await axios.get(url, { responseType: 'text' });
+    const dom = new JSDOM(response.data);
+    const firstImage = dom.window.document.querySelector(
+      '.mimg'
+    ) as HTMLImageElement;
+
+    if (firstImage && firstImage.src) {
+      res.json({ imageUrl: firstImage.src });
+    } else {
+      res.status(404).json({ error: 'No image found.' });
+    }
+  } catch (err) {
+    console.error('Error fetching image', err);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 // Start the Express server
 app.listen(port, () => {
   console.log(`The server is running at http://localhost:${port}`);

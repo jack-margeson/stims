@@ -1,0 +1,15 @@
+meta {
+  name: GET searchImage
+  type: http
+  seq: 13
+}
+
+get {
+  url: http://localhost:3000/searchImage?query=green bell pepper
+  body: none
+  auth: none
+}
+
+params:query {
+  query: green bell pepper
+}

@@ -114,22 +114,55 @@ export class IntakeComponent {
   }
 
   findImage(): void {
-    if (this.form.value['tagData'] === '') {
-      this.notificationService.showNotification('No tag data provided.');
+    // Handle books separately
+    if (this.selectedItemType?.name === 'book') {
+      if (this.form.value['tagData'] === '') {
+        this.notificationService.showNotification('No tag data provided.');
+      } else {
+        this.databaseService.getBookCover(this.form.value['tagData']).subscribe(
+          (data) => {
+            this.notificationService.showNotification('Book cover found.');
+            this.form.patchValue({ image: data });
+            document.getElementById('imageInput')?.setAttribute('src', data);
+          },
+          (error) => {
+            this.notificationService.showNotification('Book cover not found.');
+            document
+              .getElementById('imageInput')
+              ?.setAttribute('src', 'assets/png/no_img_available.png');
+          }
+        );
+      }
     } else {
-      this.databaseService.getBookCover(this.form.value['tagData']).subscribe(
-        (data) => {
-          this.notificationService.showNotification('Book cover found.');
-          this.form.patchValue({ image: data });
-          document.getElementById('imageInput')?.setAttribute('src', data);
-        },
-        (error) => {
-          this.notificationService.showNotification('Book cover not found.');
-          document
-            .getElementById('imageInput')
-            ?.setAttribute('src', 'assets/png/no_img_available.png');
-        }
-      );
+      // Generic image search
+      console.log(this.form.value);
+      const searchQuery = this.form.value.args
+        ? Object.values(this.form.value.args)[0]?.toString() || ''
+        : '';
+      if (searchQuery === '') {
+        this.notificationService.showNotification('No name provided.');
+      } else {
+        this.databaseService.getGenericImage(searchQuery).subscribe(
+          (data) => {
+            if (data) {
+              this.notificationService.showNotification('Image found.');
+              this.form.patchValue({ image: data });
+              document.getElementById('imageInput')?.setAttribute('src', data);
+            } else {
+              this.notificationService.showNotification('Image not found.');
+              document
+                .getElementById('imageInput')
+                ?.setAttribute('src', 'assets/png/no_img_available.png');
+            }
+          },
+          (error) => {
+            this.notificationService.showNotification('Error fetching image.');
+            document
+              .getElementById('imageInput')
+              ?.setAttribute('src', 'assets/png/no_img_available.png');
+          }
+        );
+      }
     }
   }
 

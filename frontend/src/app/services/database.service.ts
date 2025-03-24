@@ -126,4 +126,12 @@ export class DatabaseService {
         })
       );
   }
+
+  getGenericImage(searchQuery: string): Observable<string> {
+    return this.httpClient
+      .get<{ imageUrl: string }>(`${this.base_url}searchImage`, {
+        params: { query: searchQuery },
+      })
+      .pipe(map((response) => response.imageUrl));
+  }
 }

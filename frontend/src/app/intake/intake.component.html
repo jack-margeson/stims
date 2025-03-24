@@ -90,16 +90,12 @@
                     class="find-image-button"
                     (click)="findImage()"
                     type="button"
-                    [disabled]="
-                      !this.selectedItemType.display_name
-                        .toLowerCase()
-                        .includes('book')
-                    "
+                    [disabled]="false"
                   >
                     Find Image
                   </button>
                   <mat-icon
-                    matTooltip="Attempt to find an image for the item based upon the tag data. Currently only available for Books."
+                    matTooltip="Attempt to find an image for the item based upon the tag data or item name."
                     >info</mat-icon
                   >
                 </div>
