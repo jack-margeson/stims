@@ -115,7 +115,7 @@ export class IntakeComponent {
 
   findImage(): void {
     // Handle books separately
-    if (this.selectedItemType?.name === 'book') {
+    if (this.selectedItemType.type_name === 'book') {
       if (this.form.value['tagData'] === '') {
         this.notificationService.showNotification('No tag data provided.');
       } else {
