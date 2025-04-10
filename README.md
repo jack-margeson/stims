@@ -3,26 +3,32 @@
 - [STIMS: Smart Tagged Inventory Management Software](#stims-smart-tagged-inventory-management-software)
   - [Project Abstract](#project-abstract)
   - [Team Information](#team-information)
-  - [Project Description](#project-description)
   - [Project Planning](#project-planning)
+    - [Goals and Description](#goals-and-description)
     - [User Stories](#user-stories)
     - [Design Diagrams](#design-diagrams)
       - [Design D0](#design-d0)
       - [Design D1](#design-d1)
       - [Design D2](#design-d2)
-  - [Deliverables, Deadlines](#deliverables-deadlines)
-    - [Task List](#task-list)
-    - [Timeline](#timeline)
-  - [ABET Concerns](#abet-concerns)
-    - [Economic Constraints](#economic-constraints)
-    - [Legal Constraints](#legal-constraints)
-    - [Security Constraints](#security-constraints)
-  - [PPT Slideshow](#ppt-slideshow)
-    - [Presentation](#presentation)
+    - [Deliverables, Deadlines](#deliverables-deadlines)
+      - [Task List](#task-list)
+      - [Timeline](#timeline)
+    - [ABET Concerns](#abet-concerns)
+      - [Economic Constraints](#economic-constraints)
+      - [Legal Constraints](#legal-constraints)
+      - [Security Constraints](#security-constraints)
+  - [User Interface Specification](#user-interface-specification)
+  - [Test Plan and Results](#test-plan-and-results)
+  - [User Manual](#user-manual)
+  - [Spring Final PPT Presentation](#spring-final-ppt-presentation)
+    - [PowerPoint Slides](#powerpoint-slides)
     - [Video](#video)
-  - [Self-assessment Essay](#self-assessment-essay)
-  - [Professional Biography](#professional-biography)
-  - [Budget](#budget)
+  - [CEAS Expo Poster](#ceas-expo-poster)
+  - [Self-Assessment Reports](#self-assessment-reports)
+    - [Initial self-assessments (Fall 2024)](#initial-self-assessments-fall-2024)
+    - [Final self-assessments (Spring 2025)](#final-self-assessments-spring-2025)
+  - [Summary of Expenses](#summary-of-expenses)
+  - [Summary of Hours and Justification](#summary-of-hours-and-justification)
   - [Appendix](#appendix)
     - [Further Reading](#further-reading)
 
@@ -54,13 +60,13 @@ e: [hawkinwh@ucmail.uc.edu](mailto:hawkinwh@ucmail.uc.edu)
 
 w: [researchdirectory.uc.edu/p/hawkinwh](https://researchdirectory.uc.edu/p/hawkinwh)
 
-## Project Description
+## Project Planning
+
+### Goals and Description
 
 The main area of focus for this project is creating and manipulating inventory databases to enable easy storage and retrieval of physical items through the implementation of a custom tagging system.
 
 The project consists of a CRUD backend built in PostgreSQL and Node.js Express, with a front-end in Angular and TypeScript to utilize the power of inheritance to create different item structures. The Angular dashboard facilitates ease of use by end-users when performing database actions.
-
-## Project Planning
 
 ### User Stories
 
@@ -86,9 +92,9 @@ The project consists of a CRUD backend built in PostgreSQL and Node.js Express, 
 
 ![Design D2](project_planning/Design_Diagrams/design_d2.png)
 
-## Deliverables, Deadlines
+### Deliverables, Deadlines
 
-### Task List
+#### Task List
 
 For a status-updated task list, please view the [checklist](project_planning/Tasklist.md).
 
@@ -109,32 +115,46 @@ For a status-updated task list, please view the [checklist](project_planning/Tas
 - Test program functionality (incl. scanning) in a mock real-world inventory scenario from the perspective of a database administrator
 - Test program functionality (incl. scanning) in a mock real-world inventory scenario from the perspective of an end user
 
-### Timeline
+#### Timeline
 
 This timeline has been created under the assumption that the final date for senior design project submissions is 05/01/2023. The time to complete milestones may scale up or down depending on the validity of this estimated end date.
 
 ![Timeline Gantt chart](project_planning/project_gantt.png)
 ![Timeline Gantt chart dates](project_planning/project_gantt_dates.png)
 
-## ABET Concerns
+### ABET Concerns
 
 A summarized version of the ABET Concerns essay for this project is listed below. For more in-depth analysis, please view the [full essay](project_planning/assignment07_project_constraints_margesji.pdf).
 
-### Economic Constraints
+#### Economic Constraints
 
 Implementing tagging for the inventory system may require physical hardware, like NFC tags and scanners, which could be expensive. To mitigate this, I’ve proposed an alternative, cost-free tagging system where administrators can use unique serial codes and manual keyboard entry instead of specialized hardware.
 
-### Legal Constraints
+#### Legal Constraints
 
 Displaying item images, such as book covers or tools, in the database poses potential image licensing issues. To address this, I plan to allow administrators to upload their own images. This approach ensures that the images used in the system comply with copyright laws, as the administrators would own the rights to the photos.
 
-### Security Constraints
+#### Security Constraints
 
 Managing a local database without proper access controls could create significant security risks. To prevent this, I’m designing a user identification system with defined roles. Administrators will have full access, while regular users will have restricted access, ensuring data integrity and security.
 
-## PPT Slideshow
+## User Interface Specification
 
-### Presentation
+To get acquainted with the user interface for the STIMS project, please see the embedded screenshots in the [user guide here](https://github.com/jack-margeson/stims/wiki/User-Guide).
+
+## Test Plan and Results
+
+The testing plan for the STIMS project and results can be found [here](project_planning/test_plan.pdf).
+
+Endpoint tests performed on the middleware application have been saved and are accessible from this repository under `middleware/tests/STIMS`. These tests can be executed using the Bruno API client.
+
+## User Manual
+
+A user manual for the STIMS system has been created to onboard new users by assisting and documenting the installation process and general usage of the included features. The user manual is hosted on the project's GitHub page as a markdown wiki, which can be accessed [here](https://github.com/jack-margeson/stims/wiki/User-Guide).
+
+## Spring Final PPT Presentation
+
+### PowerPoint Slides
 
 A presentation overview of the project is available in PowerPoint form [here](project_planning/assignment08_slideshow_margesji.pptx).
 
@@ -142,21 +162,33 @@ A presentation overview of the project is available in PowerPoint form [here](pr
 
 A narrated version of the project overview is available for download [here](project_planning/assignment08_presentation_margesji.mkv), or for viewing on my YouTube channel here: https://youtu.be/K8hqDVZwBLc
 
-## Self-assessment Essay
+## CEAS Expo Poster
+
+![Expo poster](project_planning/stims_expo_poster_41x48_f_vec.png)
+
+A higher quality, PDF version of the CEAS Expo poster can be found [here](project_planning/stims_expo_poster_41x48_f_vec.pdf).
+
+## Self-Assessment Reports
 
 A self assessment essay by each team member is listed below. This essay includes design choices and rationale for the project as a whole, as well as background information regarding skills utilized in the STIMS project.
 
+### Initial self-assessments (Fall 2024)
+
 Jack Margeson - [Self-assessment Essay](project_planning/assignment03_senior_design_margesji.pdf)
 
-## Professional Biography
+### Final self-assessments (Spring 2025)
 
-The professional biography of each team member is listed below.
+Jack Margeson - [Self-assessment Essay](project_planning/assignment06_senior_design_margesji.pdf)
 
-Jack Margeson - [Professional Biography](<Jack Margeson - Professional Biography.md>)
+## Summary of Expenses
 
-## Budget
+No expenses were incurred during the development of the STIMS project.
 
-To date (12/01/2024), no costs have been incurred by the STIMS project. No current expenses are planned.
+## Summary of Hours and Justification
+
+Please note that no meeting notes are available, as the STIMS project was developed individually.
+
+I, Jack Margeson, affirm that as of April 10th, 2025, I have dedicated and exceeded the required 45 hours to project planning, prototyping, and development efforts. An estimated 45 hours of project planning was performed by myself during the Fall 2024 semester, in addition to an estimated 50-60 hours of software development between October 8th, 2024 and April 6th, 2025. Please refer to the [commit history](https://github.com/jack-margeson/stims/commits/main/) of the STIMS repository for the timestamped development progress of the project.
 
 ## Appendix
 
@@ -165,10 +197,6 @@ Main repository (you are here): https://github.com/jack-margeson/stims
 Built with [Bun](https://bun.sh/), a modern TypeScript development toolkit.
 
 Gantt charts created with [onlinegantt.com](https://www.onlinegantt.com/).
-
-Please note that no meeting notes are available, as STIMS is being developed solo.
-
-I, Jack Margeson, affirm that as of December 1, 2024, I have dedicated a minimum of 45 hours to project planning and prototyping efforts.
 
 ### Further Reading
 
